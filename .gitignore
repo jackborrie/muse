@@ -1,0 +1,5 @@
+/backend/bin/
+/backend/obj/
+/front-end/obj/
+/front-end/node_modules/
+.idea

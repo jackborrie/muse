@@ -1,0 +1,17 @@
+<div class="login-container">
+    <form [formGroup]="loginFormGroup">
+        <div class="login-panel">
+            <div class="form-row">
+                <label for="email">Email: </label>
+                <input id="email" cInput type="text" formControlName="email" placeholder="john@doe.com">
+            </div>
+            <div class="form-row">
+                <label for="password">Password: </label>
+                <input id="password" cInput type="password" formControlName="password" placeholder="ASD">
+            </div>
+            <div class="actions">
+                <button cButton text="Login" (click)="handleLogin()"></button>
+            </div>
+        </div>
+    </form>
+</div>
