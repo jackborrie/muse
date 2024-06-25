@@ -5,6 +5,7 @@ import {LoginResult} from "../models/login-result";
 import moment, {Moment} from "moment";
 import {isPlatformBrowser} from "@angular/common";
 import {BehaviorSubject, Subject} from "rxjs";
+import {Router}                          from "@angular/router";
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +27,7 @@ export class AuthenticationService {
 
     constructor(
         private _httpClient: HttpClient,
+        private _router: Router,
         @Inject(PLATFORM_ID) private platformId: any
     ) {
     }
@@ -86,6 +88,7 @@ export class AuthenticationService {
         let expiryDate = localStorage.getItem('expiry_date');
 
         if (!this.isAuthenticated) {
+            this._router.navigate(['login']);
             return;
         }
 

@@ -22,7 +22,7 @@ export class ThemeService {
     ) {
     }
 
-    public getAllThemes () {
+    public fetchAllThemes () {
         if (!isPlatformBrowser(this.platformId)) {
             return;
         }
@@ -31,6 +31,10 @@ export class ThemeService {
                 this._allThemes = themes;
                 this.$onAllThemesChange.next(this._allThemes);
             })
+    }
+
+    public getAllThemes (): Theme[] {
+        return this._allThemes ? this._allThemes.data : [];
     }
 
     public getTheme (id: string){
@@ -58,9 +62,9 @@ export class ThemeService {
             return;
         }
 
-        let theme: Theme;
+        let theme: Theme = new Theme();
         try {
-            theme = JSON.parse(currentTheme);
+            theme.serialise(JSON.parse(currentTheme));
         } catch {
             console.error('Previous theme wasn\'t able to load, might be corrupt.');
             localStorage.removeItem('theme');

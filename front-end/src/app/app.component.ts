@@ -33,7 +33,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.currentTheme = theme;
             });
 
-        this._themes.getAllThemes();
+        this._themes.fetchAllThemes();
 
         this._themes.initialThemeLoad();
 
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.isLoggedIn = isLoggedIn;
 
                 if (!this.isLoggedIn) {
-                    
+
                 }
             });
 
