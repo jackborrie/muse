@@ -1,0 +1,3 @@
+ALTER TABLE books 
+ADD COLUMN user_id TEXT REFERENCES "AspNetUsers"("Id"),
+ADD COLUMN public BOOLEAN DEFAULT false;

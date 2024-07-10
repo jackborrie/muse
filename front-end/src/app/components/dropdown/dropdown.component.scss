@@ -20,6 +20,8 @@
     border-radius: var(--border-radius);
 }
 
+html {color: green !important;}
+
 .dropdown-split {
     z-index: 2;
     position: absolute;
@@ -169,14 +171,16 @@
     }
 }
 
+.right-bottom {
+    .dropdown-container {
+        border-top-right-radius: 0;
+    }
+}
+
 .right-top {
     .dropdown-container {
         border-bottom-left-radius: 0;
     }
-}
-
-.right-bottom {
-    border-top-left-radius: 0;
 }
 
 .hidden {

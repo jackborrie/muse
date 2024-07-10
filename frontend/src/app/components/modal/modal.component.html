@@ -1,0 +1,13 @@
+<div #modalBackdrop class="modal-backdrop" [ngClass]="{hidden: !visible}">
+    <div #modal class="modal">
+        <div class="modal-header" *ngIf="getTemplate('header') != null">
+            <ng-template [ngTemplateOutlet]="getTemplate('header')"></ng-template>
+        </div>
+        <div class="modal-content">
+            <ng-template [ngTemplateOutlet]="getTemplate('content')"></ng-template>
+        </div>
+        <div class="modal-footer">
+            <ng-template [ngTemplateOutlet]="getTemplate('footer')"></ng-template>
+        </div>
+    </div>
+</div>

@@ -15,7 +15,7 @@
             <m-dropdown icon="ph-sun" title="theme" dropdownPosition="right-top">
                 @if (themes != null) {
                     @for (theme of themes.data; track theme) {
-                        <button cButton text="{{theme.name}}" (click)="handleThemeSelect(theme)"></button>
+                        <button cButton text="{{theme.name}}" (click)="handleThemeSelect(theme)" [allowSSR]="false"></button>
                     }
                 }
                 <button #addNew cButton icon="ph-plus" text=""></button>
