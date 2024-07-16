@@ -1,4 +1,6 @@
-﻿namespace task_runner.models;
+﻿using shared.models;
+
+namespace task_runner.models;
 
 public abstract class Task
 {
@@ -40,17 +42,17 @@ public abstract class Task
   public bool RunTask()
   {
     QueuedTask.StartTime = DateTime.Now.ToUniversalTime();
-    SetStatus(QueuedTaskStatus.processing);
+    SetStatus(QueuedTaskStatus.Processing);
 
     var success = Process();
 
     if (success)
     {
-      SetStatus(QueuedTaskStatus.successful);
+      SetStatus(QueuedTaskStatus.Successful);
     }
     else
     {
-      SetStatus(QueuedTaskStatus.failed);
+      SetStatus(QueuedTaskStatus.Failed);
     }
     
     PostProcess();

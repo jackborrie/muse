@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using shared.models;
 using task_runner.models;
 using task_runner.models.tasks;
 using Task = task_runner.models.Task;
@@ -74,7 +75,7 @@ public class TaskQueue
         if (task.Attempts >= 3)
         {
           task.FinishTime = DateTime.Now.ToUniversalTime();
-          task.Status = QueuedTaskStatus.failed;
+          task.Status = QueuedTaskStatus.Failed;
         }
       }
 
@@ -92,7 +93,7 @@ public class TaskQueue
   {
     Task? processTask = task.Function switch
     {
-      TaskFunction.importBook => new ImportBookTask(task),
+      TaskFunction.ImportBook => new ImportBookTask(task),
       _ => null
     };
 
@@ -102,7 +103,7 @@ public class TaskQueue
       return false;
     }
     
-    if (!processTask.LoadData(task.Data))
+    if (task.Data == null || !processTask.LoadData(task.Data))
     {
       return false;
     }

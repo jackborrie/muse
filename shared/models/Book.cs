@@ -7,16 +7,16 @@ public class Book : Model
 {
     [JsonPropertyName("title")]
     [Column("title")]
-    public string Title { get; set; }
+    public string? Title { get; set; }
     [JsonPropertyName("isbn")]
     [Column("isbn")]
-    public string Isbn { get; set; }
+    public string? Isbn { get; set; }
     [JsonPropertyName("path")]
     [Column("path")]
-    public string Path { get; set; }
+    public string? Path { get; set; }
     [JsonPropertyName("description")]
     [Column("description")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
     [JsonPropertyName("has_cover")]
     [Column("has_cover")]
     public bool HasCover { get; set; } = false;
@@ -31,7 +31,7 @@ public class Book : Model
     public double Read { get; set; } = 0;
     [JsonPropertyName("user_id")]
     [Column("user_id")]
-    public string UserId { get; set; }
+    public string? UserId { get; set; }
     /// <summary>
     /// Whether any user can view this book.
     /// </summary>

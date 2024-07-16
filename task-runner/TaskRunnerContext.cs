@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using shared.models;
 using task_runner.models;
 
 namespace task_runner;

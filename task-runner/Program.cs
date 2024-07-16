@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using shared.models;
 using task_runner.models;
 
 
@@ -82,7 +83,7 @@ namespace task_runner
           return;
         }
         
-        var tasks = _dbContext.Tasks.Where(c => c.Status == QueuedTaskStatus.pending || (c.Status == QueuedTaskStatus.failed && c.Attempts < 3)).ToArray();
+        var tasks = _dbContext.Tasks.Where(c => c.Status == QueuedTaskStatus.Pending || (c.Status == QueuedTaskStatus.Failed && c.Attempts < 3)).ToArray();
         
         if (tasks.Length <= 0)
         {

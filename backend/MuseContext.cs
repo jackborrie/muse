@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using shared.models;
 using shared.models.Identity;
-using task_runner.models;
 
 namespace backend;
 

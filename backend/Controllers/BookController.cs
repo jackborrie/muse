@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using shared.models;
 using shared.models.data;
-using task_runner.models;
 
 namespace backend.Controllers;
 
@@ -73,7 +73,7 @@ public class BookController : ControllerBase
         var importData = new BookImportData();
         importData.FileName = fileName;
         
-        importTask.Function = TaskFunction.importBook;
+        importTask.Function = TaskFunction.ImportBook;
         
         var options = new JsonSerializerOptions
         {

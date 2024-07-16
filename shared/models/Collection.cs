@@ -9,5 +9,5 @@ public class Collection : Model
     
     [JsonPropertyName("name")]
     [Column("name")]
-    public string Name { get; set; }
+    public string? Name { get; set; }
 }

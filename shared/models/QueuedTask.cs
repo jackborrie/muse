@@ -1,20 +1,18 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Nodes;
-using shared.models;
 
-namespace task_runner.models;
+namespace shared.models;
 
 public enum QueuedTaskStatus
 {
-  pending = 0,
-  processing = 1,
-  successful = 2,
-  failed = 3
+  Pending = 0,
+  Processing = 1,
+  Successful = 2,
+  Failed = 3
 }
 
 public enum TaskFunction
 {
-  importBook = 0
+  ImportBook = 0
 }
 
 [Table("queued_tasks")]
@@ -40,7 +38,7 @@ public class QueuedTask : Model
   public int Attempts { get; set; }
   
   [Column("task_data", TypeName = "json")]
-  public string Data { get; set; }
+  public string? Data { get; set; }
   
   [Column("user_id")]
   public string? UserId { get; set; }
