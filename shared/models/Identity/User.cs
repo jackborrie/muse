@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Mimic.Models.Identities;
+namespace shared.models.Identity;
 
 public class User : IdentityUser
 {

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace backend.models;
+namespace shared.models;
 
 public class Book : Model
 {

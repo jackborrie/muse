@@ -1,7 +1,7 @@
 using backend;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Mimic.Models.Identities;
+using shared.models.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +20,9 @@ builder.Services.AddAuthorizationBuilder();
 var config = builder.Configuration;
 builder.Services.AddDbContext<MuseContext>(options =>
     options.UseNpgsql(config.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddSingleton<IConfiguration>(config);
 
 builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<MuseContext>()

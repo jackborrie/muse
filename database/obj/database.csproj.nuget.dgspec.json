@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/home/inlitum/dev/muse/database/database.csproj": {}
+    "C:\\Users\\JackBorrie\\dev\\hobby\\muse\\database\\database.csproj": {}
   },
   "projects": {
-    "/home/inlitum/dev/muse/database/database.csproj": {
+    "C:\\Users\\JackBorrie\\dev\\hobby\\muse\\database\\database.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/inlitum/dev/muse/database/database.csproj",
+        "projectUniqueName": "C:\\Users\\JackBorrie\\dev\\hobby\\muse\\database\\database.csproj",
         "projectName": "database",
-        "projectPath": "/home/inlitum/dev/muse/database/database.csproj",
-        "packagesPath": "/home/inlitum/.nuget/packages/",
-        "outputPath": "/home/inlitum/dev/muse/database/obj/",
+        "projectPath": "C:\\Users\\JackBorrie\\dev\\hobby\\muse\\database\\database.csproj",
+        "packagesPath": "C:\\Users\\JackBorrie\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\JackBorrie\\dev\\hobby\\muse\\database\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/home/inlitum/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\JackBorrie\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -53,7 +60,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/inlitum/.dotnet/sdk/8.0.300/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

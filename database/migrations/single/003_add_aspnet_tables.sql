@@ -9,7 +9,7 @@ create table if not exists "AspNetRoles"
 );
 
 alter table "AspNetRoles"
-    owner to companion_owner;
+    owner to mimic_owner;
 
 create unique index if not exists "RoleNameIndex"
     on "AspNetRoles" ("NormalizedName");

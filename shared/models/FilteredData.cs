@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace backend.models;
+namespace shared.models;
 
 public class FilteredData<T> where T : Model
 {

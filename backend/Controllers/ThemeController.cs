@@ -1,6 +1,6 @@
-using backend.models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using shared.models;
 
 namespace backend.Controllers
 {

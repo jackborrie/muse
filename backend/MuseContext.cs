@@ -1,7 +1,8 @@
-using backend.models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Mimic.Models.Identities;
+using shared.models;
+using shared.models.Identity;
+using task_runner.models;
 
 namespace backend;
 
@@ -12,8 +13,9 @@ public class MuseContext : IdentityDbContext<User>
         
     }
     
-    public DbSet<User> Users { get; set; }
-    public DbSet<Theme> Themes { get; set; }
-    public DbSet<Book> Books { get; set; }
-    public DbSet<Collection> Collections { get; set; }
+    public new DbSet<User> Users { get; init; }
+    public DbSet<Theme> Themes { get; init; }
+    public DbSet<Book> Books { get; init; }
+    public DbSet<Collection> Collections { get; init; }
+    public DbSet<QueuedTask> Tasks { get; init; }
 }

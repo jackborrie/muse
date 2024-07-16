@@ -1,6 +1,5 @@
-using System.Security.Cryptography;
-using backend.models;
 using Microsoft.AspNetCore.Mvc;
+using shared.models;
 
 namespace backend.Controllers;
 
