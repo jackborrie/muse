@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace shared.models;
 
+[Table("books")]
 public class Book : Model
 {
     [JsonPropertyName("title")]

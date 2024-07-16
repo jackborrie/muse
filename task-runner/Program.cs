@@ -14,7 +14,8 @@ namespace task_runner
     private static int _tickTime = 5000;
     
     public static TaskRunnerContext? _dbContext;
-    public static string? TempDirPath;
+    public static string TempDirPath;
+    public static string BookDir;
     
     static void Main(string[] args)
     {
@@ -37,6 +38,15 @@ namespace task_runner
       {
         return;
       }
+      
+      var bookDir = config.GetValue<string>("BookDir");
+
+      if (bookDir == null)
+      {
+        return;
+      }
+
+      BookDir = bookDir;
 
       TempDirPath = temp;
 

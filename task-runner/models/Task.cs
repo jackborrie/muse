@@ -44,20 +44,23 @@ public abstract class Task
     QueuedTask.StartTime = DateTime.Now.ToUniversalTime();
     SetStatus(QueuedTaskStatus.Processing);
 
-    var success = Process();
+    var successfullyProcessed = Process();
 
-    if (success)
+    if (successfullyProcessed)
     {
       SetStatus(QueuedTaskStatus.Successful);
     }
     else
     {
       SetStatus(QueuedTaskStatus.Failed);
+      Revert();
     }
+    
+    
     
     PostProcess();
     
-    return success;
+    return successfullyProcessed;
   }
 
   private void SetStatus(QueuedTaskStatus status)

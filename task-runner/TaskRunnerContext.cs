@@ -7,7 +7,7 @@ namespace task_runner;
 public class TaskRunnerContext : DbContext
 {
   public DbSet<QueuedTask> Tasks { get; set; }
-  public DbSet<QueuedTask> Books { get; set; }
+  public DbSet<Book> Books { get; set; }
   
   public TaskRunnerContext(DbContextOptions<TaskRunnerContext> options)
     : base(options)

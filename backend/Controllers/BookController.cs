@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using shared.models;
 using shared.models.data;
@@ -22,8 +24,15 @@ public class BookController : ControllerBase
     }
     
     [HttpPost]
+    // [Authorize]
     public ActionResult Upload(IFormFile file)
     {
+        // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // if (userId == null)
+        // {
+            // return Unauthorized();
+        // }
+        
         var tempDir = _configuration.GetValue<string>("TempEpubDir");
 
         if (string.IsNullOrEmpty(tempDir))
@@ -79,7 +88,8 @@ public class BookController : ControllerBase
         {
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         };
-        
+
+        // importTask.UserId = userId;
         importTask.Data = JsonSerializer.Serialize(importData, options);
 
         _context.Tasks.Add(importTask);

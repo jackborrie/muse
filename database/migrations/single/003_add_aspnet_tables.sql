@@ -36,7 +36,7 @@ create table if not exists "AspNetUsers"
 );
 
 alter table "AspNetUsers"
-    owner to companion_owner;
+    owner to mimic_owner;
 
 create index if not exists "EmailIndex"
     on "AspNetUsers" ("NormalizedEmail");
@@ -58,7 +58,7 @@ create table if not exists "AspNetRoleClaims"
 );
 
 alter table "AspNetRoleClaims"
-    owner to companion_owner;
+    owner to mimic_owner;
 
 create index if not exists "IX_AspNetRoleClaims_RoleId"
     on "AspNetRoleClaims" ("RoleId");
@@ -77,7 +77,7 @@ create table if not exists "AspNetUserClaims"
 );
 
 alter table "AspNetUserClaims"
-    owner to companion_owner;
+    owner to mimic_owner;
 
 create index if not exists "IX_AspNetUserClaims_UserId"
     on "AspNetUserClaims" ("UserId");
@@ -96,7 +96,7 @@ create table if not exists "AspNetUserLogins"
 );
 
 alter table "AspNetUserLogins"
-    owner to companion_owner;
+    owner to mimic_owner;
 
 create index if not exists "IX_AspNetUserLogins_UserId"
     on "AspNetUserLogins" ("UserId");
@@ -116,7 +116,7 @@ create table if not exists "AspNetUserRoles"
 );
 
 alter table "AspNetUserRoles"
-    owner to companion_owner;
+    owner to mimic_owner;
 
 create index if not exists "IX_AspNetUserRoles_RoleId"
     on "AspNetUserRoles" ("RoleId");
@@ -135,5 +135,5 @@ create table if not exists "AspNetUserTokens"
 );
 
 alter table "AspNetUserTokens"
-    owner to companion_owner;
+    owner to mimic_owner;
 
