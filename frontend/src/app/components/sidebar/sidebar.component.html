@@ -5,7 +5,22 @@
             </button>
             <m-dropdown icon="ph-plus" title="add new" dropdownPosition="right-bottom">
                 <div class="file-drop-container">
-
+                    <div id="drop-zone"
+                         (drop)="handleFileDrop($event);"
+                         (dragover)="handleDragOver($event);"
+                         (click)="fileInput.click()">
+                        <div class="upload-list" *ngIf="uploading">
+                            <span *ngFor="let upload of uploads | keyvalue">
+                                {{ upload.key }}
+                            </span>
+                        </div>
+                        <ng-container *ngIf="!uploading">
+                            <i class="ph ph-upload"></i>
+                            <span>Drag books</span>
+                            <span>or click here</span>
+                        </ng-container>
+                        <input #fileInput type="file" accept=".epub" style="opacity: 0" (change)="handleFileUpload($event)">
+                    </div>
                 </div>
             </m-dropdown>
         </div>

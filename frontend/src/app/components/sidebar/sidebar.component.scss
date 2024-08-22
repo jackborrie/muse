@@ -36,3 +36,27 @@
     border-radius: var(--border-radius);
     padding: 1rem;
 }
+
+.file-drop-container {
+    width: 200px;
+    height: 250px;
+    padding: 0.5rem;
+}
+
+#drop-zone {
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    height: 100%;
+    border: var(--border);
+    border-style: dashed;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 0.5rem;
+
+    & i {
+        font-size: 1.5rem;
+    }
+}

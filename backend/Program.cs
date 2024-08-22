@@ -37,15 +37,16 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().WithOrigins(new []{"http://localhost:4201"}).AllowCredentials());
-// app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader());
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.MapIdentityApi<User>();
 app.MapControllers();
 
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.Run();

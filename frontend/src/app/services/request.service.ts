@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, Observable}         from 'rxjs';
 import {Model}                   from '../models/model';
 import {FilteredData}            from "../models/filtered-data";
+import {AuthenticationService} from "./authentication.service";
 
 export type ModelConstructor<T> = new () => T;
 
@@ -14,7 +15,8 @@ export class RequestService {
     private _baseUrl: string = 'http://localhost:5158';
 
     constructor(
-        private _httpClient: HttpClient
+        private _httpClient: HttpClient,
+        private _auth: AuthenticationService
     ) {
     }
 
@@ -22,6 +24,8 @@ export class RequestService {
         if (headers == null) {
             headers = new HttpHeaders();
         }
+
+        headers = this._addAuthenticationHeaders(headers);
 
         return this._httpClient.get(this._baseUrl + '/' + route, {headers: headers}).pipe(
             map(data => {
@@ -38,6 +42,8 @@ export class RequestService {
         if (headers == null) {
             headers = new HttpHeaders();
         }
+
+        headers = this._addAuthenticationHeaders(headers);
 
         return this._httpClient.get<FilteredData<T>>(this._baseUrl + '/' + route, {headers: headers})
             .pipe(
@@ -67,22 +73,44 @@ export class RequestService {
             headers = new HttpHeaders();
         }
 
+        headers = this._addAuthenticationHeaders(headers);
+
         return this._httpClient.post(this._baseUrl + '/' + route, body, {headers: headers});
     }
 
     public put(route: string, body: { [key: string]: any } | null, headers?: HttpHeaders) {
+        if (headers == null) {
+            headers = new HttpHeaders()
+        }
+
+        headers = this._addAuthenticationHeaders(headers);
+
         return this._httpClient.put(this._baseUrl + '/' + route, body, {headers: headers});
     }
 
     public delete(route: string, headers?: HttpHeaders) {
         if (headers == null) {
-            headers = new HttpHeaders();
+            headers = new HttpHeaders()
         }
+
+        headers = this._addAuthenticationHeaders(headers);
 
         return this._httpClient.delete(this._baseUrl + '/' + route, {headers: headers});
     }
 
     public download (route: string) {
-        return this._httpClient.get(this._baseUrl + '/' + route, { responseType: 'blob' });
+        let headers = new HttpHeaders();
+
+        headers = this._addAuthenticationHeaders(headers);
+
+        return this._httpClient.get(this._baseUrl + '/' + route, { responseType: 'blob', headers: headers });
+    }
+
+    private _addAuthenticationHeaders (headers: HttpHeaders): HttpHeaders {
+        if (!this._auth.isAuthenticated) {
+            return headers;
+        }
+
+        return headers.append('Authorization', `Bearer ${this._auth.getAccessToken()}`);
     }
 }

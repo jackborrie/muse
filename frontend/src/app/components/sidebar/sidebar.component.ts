@@ -10,6 +10,13 @@ import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CompanionInputDirective} from "../../directives/companion-input.directive";
 import {AuthenticationService} from "../../services/authentication.service";
 import {User} from "../../models/user";
+import {CommonModule, NgIf} from "@angular/common";
+import {BookService} from "../../services/book.service";
+
+export interface FileUploadInterface {
+    uploaded: boolean;
+    file: File;
+}
 
 @Component({
     selector: 'app-sidebar',
@@ -20,7 +27,8 @@ import {User} from "../../models/user";
         ModalComponent,
         CompanionTemplate,
         ReactiveFormsModule,
-        CompanionInputDirective
+        CompanionInputDirective,
+        CommonModule
     ],
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.scss'
@@ -31,6 +39,21 @@ export class SidebarComponent implements OnInit {
     AddNewModal!: ModalComponent;
 
     protected themes: FilteredData<Theme> | null = null;
+
+
+    protected uploads: {[key: string]: FileUploadInterface} = {};
+
+    protected get uploading (): boolean {
+        const keys = Object.keys(this.uploads);
+
+        for (let key of keys) {
+            if (!this.uploads[key].uploaded) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     protected newThemeFormGroup = this.formBuilder.group({
         themeName: ['#1a2b3c', Validators.required],
@@ -69,7 +92,7 @@ export class SidebarComponent implements OnInit {
     public constructor(
         private _themes: ThemeService,
         private formBuilder: FormBuilder,
-        private _authentication: AuthenticationService
+        private _books: BookService
     ) {
     }
 
@@ -160,5 +183,44 @@ export class SidebarComponent implements OnInit {
         theme.style = themeStyle;
 
         console.log(theme)
+    }
+
+    protected handleFileDrop (event: DragEvent) {
+        console.log(event)
+        event.preventDefault();
+
+        if (event.dataTransfer == null || event.dataTransfer.items == null) {
+            return;
+        }
+        this._uploadBooks(event.dataTransfer.items);
+    }
+
+    protected handleDragOver (event: DragEvent) {
+        // console.log(event)
+    }
+
+    protected handleFileUpload (event: any) {
+        let fileList: FileList = event.target.files;
+
+        if (fileList.length < 1) {
+            return;
+        }
+
+        this._uploadBooks(fileList);
+    }
+
+    private _uploadBooks (files: any) {
+        for (let fileIdx = 0; fileIdx < files.length; fileIdx++) {
+            const file = files[fileIdx];
+
+            this.uploads[file.name] = {
+                uploaded: false,
+                file: file
+            }
+
+            this._books.uploadBook(file).subscribe (result => {
+                this.uploads[file.name].uploaded = true;
+            })
+        }
     }
 }

@@ -123,4 +123,8 @@ export class AuthenticationService {
                 this.$onIsLoggedInChanged.next(false);
             })
     }
+
+    public getAccessToken (): string | null {
+        return this._accessToken;
+    }
 }

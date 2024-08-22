@@ -176,7 +176,9 @@
 }
 
 .right-bottom {
-    border-top-left-radius: 0;
+    .dropdown-container {
+        border-top-left-radius: 0;
+    }
 }
 
 .hidden {

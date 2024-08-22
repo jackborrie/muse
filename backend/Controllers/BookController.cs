@@ -27,11 +27,11 @@ public class BookController : ControllerBase
     // [Authorize]
     public ActionResult Upload(IFormFile file)
     {
-        // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        // if (userId == null)
-        // {
-            // return Unauthorized();
-        // }
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userId == null)
+        {
+            return Unauthorized();
+        }
         
         var tempDir = _configuration.GetValue<string>("TempEpubDir");
 
@@ -89,7 +89,7 @@ public class BookController : ControllerBase
             PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
         };
 
-        // importTask.UserId = userId;
+        importTask.UserId = userId;
         importTask.Data = JsonSerializer.Serialize(importData, options);
 
         _context.Tasks.Add(importTask);
