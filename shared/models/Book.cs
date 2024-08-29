@@ -1,10 +1,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using shared.models.@base;
+using shared.models.Identity;
 
 namespace shared.models;
 
 [Table("books")]
-public class Book : Model
+public class Book : IdModel
 {
     [JsonPropertyName("title")]
     [Column("title")]
@@ -12,7 +14,7 @@ public class Book : Model
     [JsonPropertyName("isbn")]
     [Column("isbn")]
     public string? Isbn { get; set; }
-    [JsonPropertyName("path")]
+    [JsonIgnore]
     [Column("path")]
     public string? Path { get; set; }
     [JsonPropertyName("description")]
@@ -30,13 +32,26 @@ public class Book : Model
     [JsonPropertyName("read")]
     [Column("read")]
     public double Read { get; set; } = 0;
-    [JsonPropertyName("user_id")]
-    [Column("user_id")]
-    public string? UserId { get; set; }
+    [JsonPropertyName("owner_id")]
+    [Column("owner_id")]
+    public string? OwnerId { get; set; }
+    
+    [Column("file_hash")]
+    [JsonIgnore]
+    public string Hash { get; set; }
     /// <summary>
     /// Whether any user can view this book.
     /// </summary>
     [JsonPropertyName("public")]
     [Column("public")]
     public bool Public { get; set; } = false;
+    
+    
+    //Used by code
+    [JsonPropertyName("creation_date")]  
+    [NotMapped]
+    public DateTime CreationDate { get; set; }
+
+
+    public List<User> Users { get; set; } = [];
 }

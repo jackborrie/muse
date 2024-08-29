@@ -1,12 +1,12 @@
 import {Directive, Input, TemplateRef} from '@angular/core';
 
 @Directive({
-  selector: '[cTemplate]',
+  selector: '[mTemplate]',
   standalone: true
 })
-export class CompanionTemplate {
+export class MuseTemplate {
 
-    @Input('cTemplate') name!: string;
+    @Input('mTemplate') name!: string;
 
     constructor (public template: TemplateRef<any>) {
     }

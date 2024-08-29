@@ -64,6 +64,19 @@ namespace backend.Controllers
             
             return theme;
         }
+
+        [HttpGet("default")]
+        public ActionResult<Theme> GetDefault()
+        {
+            var theme = _context.Themes.FirstOrDefault(t => t.ClassName == "solarized-light");
+
+            if (theme == null)
+            {
+                return BadRequest("No default theme has been set.");
+            }
+
+            return theme;
+        }
         
         [HttpPut("{id}")]
         public ActionResult<Theme> Update(string? id, Theme data)

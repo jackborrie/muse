@@ -1,4 +1,4 @@
-.mimic-button:not([aria-disabled]), .mimic-icon-button:not([aria-disabled]) {
+.muse-button:not([aria-disabled]), .muse-icon-button:not([aria-disabled]) {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -40,11 +40,11 @@
     }
 }
 
-.mimic-icon-button {
+.muse-icon-button {
     width: 38px;
 }
 
-.mimic-button {
+.muse-button {
     white-space: nowrap;
     padding: 0 1rem;
 

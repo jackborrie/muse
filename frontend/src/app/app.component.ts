@@ -6,6 +6,7 @@ import {NgStyle} from "@angular/common";
 import {SidebarComponent} from "./components/sidebar/sidebar.component";
 import {AuthenticationService} from "./services/authentication.service";
 import {Subscription} from "rxjs";
+import {BookService}                  from "./services/book.service";
 
 @Component({
     selector: 'app-root',
@@ -23,7 +24,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
     public constructor(
         private _themes: ThemeService,
-        private _authService: AuthenticationService
+        private _authService: AuthenticationService,
+        private _books: BookService
     ) {
     }
 
@@ -49,6 +51,10 @@ export class AppComponent implements OnInit, OnDestroy {
         this._authService.attemptLogin();
 
         this._subscriptions.add(authSub);
+
+        this._books.getBooks().subscribe(data => {
+            console.log(data);
+        })
     }
 
     ngOnDestroy() {

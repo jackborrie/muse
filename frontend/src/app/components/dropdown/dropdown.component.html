@@ -1,6 +1,11 @@
 <div #dropdown class="dropdown" [ngClass]="{down: isDropdownDown}">
-    <button cButton [icon]="icon" [text]="text" [iconPos]="iconPos" [color]="color" (click)="handleDropdownClick()"></button>
-    <div class="dropdown-split" [ngClass]="{hidden: !isDropdownDown}"></div>
+    <button #button mButton [icon]="icon" [text]="text" [iconPos]="iconPos" [color]="color" (click)="handleDropdownClick()">
+        <ng-container *ngIf="showDropdownCaret">
+            <i *ngIf="!isDropdownDown" class="ph ph-caret-down"></i>
+            <i *ngIf="isDropdownDown" class="ph ph-caret-right"></i>
+        </ng-container>
+    </button>
+    <div #split class="dropdown-split" [ngClass]="{hidden: !isDropdownDown}"></div>
     <div class="dropdown-container" [ngClass]="{hidden: !isDropdownDown}">
         <ng-content></ng-content>
     </div>

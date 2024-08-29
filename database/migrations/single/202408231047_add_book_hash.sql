@@ -1,0 +1,2 @@
+ALTER TABLE books
+ADD COLUMN file_hash TEXT NOT NULL;

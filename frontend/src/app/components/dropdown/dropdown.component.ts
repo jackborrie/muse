@@ -8,9 +8,9 @@ import {
     PLATFORM_ID,
     Renderer2,
     ViewChild
-} from '@angular/core';
-import {ButtonColor, IconPos, CompanionButtonDirective} from "../../directives/companion-button.directive";
-import {NgClass} from "@angular/common";
+}                                                  from '@angular/core';
+import {ButtonColor, IconPos, MuseButtonDirective} from "../../directives/muse-button.directive";
+import {NgClass, NgIf, NgStyle}                    from "@angular/common";
 
 export type DropdownPosition = 'top-left' | 'top-right' | 'right-top' | 'right-bottom' | 'bottom-left' | 'bottom-right' | 'left-top' | 'left-bottom';
 
@@ -18,8 +18,10 @@ export type DropdownPosition = 'top-left' | 'top-right' | 'right-top' | 'right-b
   selector: 'm-dropdown',
   standalone: true,
     imports: [
-        CompanionButtonDirective,
-        NgClass
+        MuseButtonDirective,
+        NgClass,
+        NgIf,
+        NgStyle
     ],
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss'
@@ -28,6 +30,10 @@ export class DropdownComponent implements AfterViewInit {
 
     @ViewChild('dropdown')
     protected dropdown!: ElementRef;
+    @ViewChild('button')
+    protected button!: ElementRef;
+    @ViewChild('split')
+    protected split!: ElementRef;
 
     @Input()
     icon?: string;
@@ -37,6 +43,9 @@ export class DropdownComponent implements AfterViewInit {
     iconPos: IconPos = 'right';
     @Input()
     color: ButtonColor = 'primary';
+
+    @Input()
+    showDropdownCaret: boolean = false;
 
     @Input()
     dropdownPosition?: DropdownPosition;
@@ -57,6 +66,10 @@ export class DropdownComponent implements AfterViewInit {
         }
 
         this.dropdown.nativeElement.classList.add(this.dropdownPosition);
+
+        let width = this.button.nativeElement.clientWidth ?? 0;
+
+        this.split.nativeElement.setAttribute('style', `--thick: ${width}px`);
     }
 
     @HostListener('window:click', ['$event.target'])

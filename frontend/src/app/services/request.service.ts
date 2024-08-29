@@ -38,7 +38,7 @@ export class RequestService {
         );
     }
 
-    public getAll<T extends Model>(route: string, model: ModelConstructor<T>, headers: HttpHeaders | null): Observable<FilteredData<T>> {
+    public getAll<T extends Model>(route: string, model: ModelConstructor<T>, headers: HttpHeaders | null = null): Observable<FilteredData<T>> {
         if (headers == null) {
             headers = new HttpHeaders();
         }

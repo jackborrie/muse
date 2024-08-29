@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using shared.models.@base;
 
 namespace shared.models;
 
@@ -12,11 +13,12 @@ public enum QueuedTaskStatus
 
 public enum TaskFunction
 {
-  ImportBook = 0
+  ImportBook = 0,
+  DeleteBook = 1
 }
 
 [Table("queued_tasks")]
-public class QueuedTask : Model
+public class QueuedTask : IdModel
 {
   [Column("function")] 
   public TaskFunction Function { get; set; }

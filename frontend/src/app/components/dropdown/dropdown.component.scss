@@ -59,7 +59,7 @@
     }
 
     .dropdown-split {
-        width: 36px;
+        width: var(--thick);
         height: 1px;
         top: 0;
         left: 1px;
@@ -73,7 +73,7 @@
     }
 
     .dropdown-split {
-        width: 36px;
+        width: var(--thick);
         height: 1px;
         bottom: 0;
         left: 1px;

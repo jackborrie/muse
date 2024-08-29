@@ -1,0 +1,32 @@
+.section {
+    border: var(--border);
+    border-radius: var(--border-radius);
+}
+
+.section-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 1.5rem;
+
+    border-top-left-radius: calc(var(--border-radius) - 3px);
+    border-top-right-radius: calc(var(--border-radius) - 3px);
+    background: var(--foreground-0);
+    color: var(--background-0);
+    padding: 1rem;
+    //border-bottom: var(--border);
+
+    &.content-hidden {
+        border-radius: calc(var(--border-radius) - 3px);
+    }
+}
+
+.section-content {
+    padding: 1rem;
+
+    border-bottom-left-radius: calc(var(--border-radius) - 3px);
+    border-bottom-right-radius: calc(var(--border-radius) - 3px);
+}
+
+.content {
+}

@@ -10,8 +10,8 @@ import {
     TemplateRef, ViewChild
 } from '@angular/core';
 import {NgClass, NgIf, NgTemplateOutlet} from "@angular/common";
-import {CompanionTemplate} from "../../directives/companion-template.directive";
-import {getTemplate} from "../../lib/get-template";
+import {MuseTemplate}                    from "../../directives/muse-template.directive";
+import {getTemplate}                     from "../../lib/get-template";
 import {fromEvent, Subscription} from "rxjs";
 
 @Component({
@@ -27,8 +27,8 @@ import {fromEvent, Subscription} from "rxjs";
 })
 export class ModalComponent implements  OnInit, AfterViewInit, OnDestroy {
 
-    @ContentChildren(CompanionTemplate)
-    templates!: QueryList<CompanionTemplate>;
+    @ContentChildren(MuseTemplate)
+    templates!: QueryList<MuseTemplate>;
 
     @ViewChild('modalBackdrop')
     backdrop!: ElementRef;

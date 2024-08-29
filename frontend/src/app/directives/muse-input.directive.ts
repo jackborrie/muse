@@ -1,10 +1,10 @@
 import {Directive, ElementRef, OnInit} from '@angular/core';
 
 @Directive({
-    selector: '[cInput]',
+    selector: '[mInput]',
     standalone: true
 })
-export class CompanionInputDirective implements OnInit {
+export class MuseInputDirective implements OnInit {
 
     constructor(
         protected el: ElementRef

@@ -1,9 +1,13 @@
 <div class="sidebar-container">
     <div class="sidebar d-flex f-column row-gap-1">
         <div class="top d-flex f-column row-gap-1">
-            <button cButton icon="ph-house" title="home">
+            <button mButton [icon]="homeIcon" title="home" routerLink="dashboard">
             </button>
-            <m-dropdown icon="ph-plus" title="add new" dropdownPosition="right-bottom">
+            <button mButton icon="ph-book" title="books" routerLink="books">
+            </button>
+        </div>
+        <div class="bottom d-flex f-column row-gap-1">
+            <m-dropdown icon="ph-plus" title="add new" dropdownPosition="right-top">
                 <div class="file-drop-container">
                     <div id="drop-zone"
                          (drop)="handleFileDrop($event);"
@@ -23,188 +27,13 @@
                     </div>
                 </div>
             </m-dropdown>
-        </div>
-        <div class="bottom d-flex f-column row-gap-1">
-            <button cButton icon="ph-paint-roller"></button>
             <m-dropdown icon="ph-sun" title="theme" dropdownPosition="right-top">
                 @if (themes != null) {
                     @for (theme of themes.data; track theme) {
-                        <button cButton text="{{theme.name}}" (click)="handleThemeSelect(theme)" [allowSSR]="false"></button>
+                        <button mButton text="{{theme.name}}" (click)="handleThemeSelect(theme)"></button>
                     }
                 }
-                <button #addNew cButton icon="ph-plus" text=""></button>
             </m-dropdown>
-<!--            <button cButton icon="ph-sign-out" title="logout" (click)="logout()">-->
-<!--            </button>-->
         </div>
     </div>
 </div>
-
-<c-modal #modal [showElement]="addNew">
-    <ng-template cTemplate="header">
-        Add new theme
-        <div class="pull-right">
-            <button cButton [icon]="'ph-x'" [allowSSR]="true" (click)="modal.setVisible(false)"></button>
-        </div>
-    </ng-template>
-    <ng-template cTemplate="content">
-        <form class="new-theme-form" [formGroup]="newThemeFormGroup">
-            <div class="form-row">
-                <label for="name">Name: </label>
-                <input id="name" cInput type="text" formControlName="themeName" placeholder="catppuccin mocha">
-            </div>
-            <div class="form-row">
-                <label for="class-name">Class Name: </label>
-                <input id="class-name" cInput type="text" formControlName="themeClassName" placeholder="catppuccin-mocha">
-            </div>
-            <div class="form-section">
-                <div>
-                    Background:
-                </div>
-                <div>
-                    Foreground:
-                </div>
-                <div class="form-section form-bordered">
-                    <div class="form-row">
-                        <label for="background-0">Background 0: </label>
-                        <input id="background-0" cInput type="text" formControlName="background0" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="background-1">Background 1: </label>
-                        <input id="background-1" cInput type="text" formControlName="background1" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="background-2">Background 2: </label>
-                        <input id="background-2" cInput type="text" formControlName="background2" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="background-3">Background 3: </label>
-                        <input id="background-3" cInput type="text" formControlName="background3" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="background-4">Background 4: </label>
-                        <input id="background-4" cInput type="text" formControlName="background4" placeholder="#1a2b3c">
-                    </div>
-                </div>
-                <div class="form-section form-bordered">
-                    <div class="form-row">
-                        <label for="foreground-0">Foreground 0: </label>
-                        <input id="foreground-0" cInput type="text" formControlName="foreground0" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="foreground-1">Foreground 1: </label>
-                        <input id="foreground-1" cInput type="text" formControlName="foreground1" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="foreground-2">Foreground 2: </label>
-                        <input id="foreground-2" cInput type="text" formControlName="foreground2" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="foreground-3">Foreground 3: </label>
-                        <input id="foreground-3" cInput type="text" formControlName="foreground3" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="foreground-4">Foreground 4: </label>
-                        <input id="foreground-4" cInput type="text" formControlName="foreground4" placeholder="#1a2b3c">
-                    </div>
-                </div>
-            </div>
-            Colors:
-            <div class="form-section form-bordered">
-                <div class="form-row">
-                    <label for="red">Red: </label>
-                    <input id="red" cInput type="text" formControlName="red" placeholder="#1a2b3c">
-                </div>
-                <div class="form-row">
-                    <label for="yellow">Yellow: </label>
-                    <input id="yellow" cInput type="text" formControlName="yellow" placeholder="#1a2b3c">
-                </div>
-                <div class="form-row">
-                    <label for="orange">Orange: </label>
-                    <input id="orange" cInput type="text" formControlName="orange" placeholder="#1a2b3c">
-                </div>
-                <div class="form-row">
-                    <label for="magenta">Magenta: </label>
-                    <input id="magenta" cInput type="text" formControlName="magenta" placeholder="#1a2b3c">
-                </div>
-                <div class="form-row">
-                    <label for="violet">Violet: </label>
-                    <input id="violet" cInput type="text" formControlName="violet" placeholder="#1a2b3c">
-                </div>
-                <div class="form-row">
-                    <label for="blue">Blue: </label>
-                    <input id="blue" cInput type="text" formControlName="blue" placeholder="#1a2b3c">
-                </div>
-                <div class="form-row">
-                    <label for="cyan">Cyan: </label>
-                    <input id="cyan" cInput type="text" formControlName="cyan" placeholder="#1a2b3c">
-                </div>
-                <div class="form-row">
-                    <label for="green">Green: </label>
-                    <input id="green" cInput type="text" formControlName="green" placeholder="#1a2b3c">
-                </div>
-            </div>
-            <div class="form-section">
-                <div>
-                    Padding
-                </div>
-                <div>
-                    Border
-                </div>
-                <div class="form-section form-bordered">
-                    <div class="form-row">
-                        <label for="border-radius">Border Radius: </label>
-                        <input id="border-radius" cInput type="text" formControlName="borderRadius" placeholder="5px">
-                    </div>
-                    <div class="form-row">
-                        <label for="border-thickness">Border Thickness: </label>
-                        <input id="border-thickness" cInput type="text" formControlName="borderThickness" placeholder="1px">
-                    </div>
-                    <div class="form-row">
-                        <label for="border-type">Border Type: </label>
-                        <input id="border-type" cInput type="text" formControlName="borderType" placeholder="5px">
-                    </div>
-                    <div class="form-row">
-                        <label for="border-color">Border Color: </label>
-                        <input id="border-color" cInput type="text" formControlName="borderColor" placeholder="#1a2b3c">
-                    </div>
-                </div>
-                <div class="form-section form-bordered">
-                    <div class="form-row">
-                        <label for="sidebar-left-padding">Sidebar Left Padding: </label>
-                        <input id="sidebar-left-padding" cInput type="text" formControlName="sideBarLeftPadding" placeholder="1rem">
-                    </div>
-                    <div class="form-row">
-                        <label for="sidebar-top-padding">Sidebar Top Padding: </label>
-                        <input id="sidebar-top-padding" cInput type="text" formControlName="sideBarTopPadding" placeholder="1rem">
-                    </div>
-                    <div class="form-row">
-                        <label for="sidebar-right-padding">Sidebar Right Padding: </label>
-                        <input id="sidebar-right-padding" cInput type="text" formControlName="sideBarRightPadding" placeholder="1rem">
-                    </div>
-                    <div class="form-row">
-                        <label for="sidebar-bottom-padding">Sidebar Bottom Padding: </label>
-                        <input id="sidebar-bottom-padding" cInput type="text" formControlName="sideBarBottomPadding" placeholder="1rem">
-                    </div>
-                    <div class="form-row">
-                        <label for="content-top-padding">Content Top Padding: </label>
-                        <input id="content-top-padding" cInput type="text" formControlName="contentTopPadding" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="content-right-padding">Content Right Padding: </label>
-                        <input id="content-right-padding" cInput type="text" formControlName="contentRightPadding" placeholder="#1a2b3c">
-                    </div>
-                    <div class="form-row">
-                        <label for="content-bottom-padding">Content Bottom Padding: </label>
-                        <input id="content-bottom-padding" cInput type="text" formControlName="contentBottomPadding" placeholder="#1a2b3c">
-                    </div>
-                </div>
-            </div>
-        </form>
-    </ng-template>
-    <ng-template cTemplate="footer">
-        <div class="pull-right">
-            <button cButton text="save" icon="ph-floppy-disk" iconPos="left" color="accent" [allowSSR]="true" [disabled]="!newThemeFormGroup.valid" (click)="saveTheme()"></button>
-        </div>
-    </ng-template>
-</c-modal>

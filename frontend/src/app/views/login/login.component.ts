@@ -1,8 +1,8 @@
-import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
-import {CompanionInputDirective} from "../../directives/companion-input.directive";
+import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID}         from '@angular/core';
+import {MuseInputDirective}                                        from "../../directives/muse-input.directive";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {CompanionButtonDirective} from "../../directives/companion-button.directive";
-import {User} from "../../models/user";
+import {MuseButtonDirective}                                       from "../../directives/muse-button.directive";
+import {User}                                                      from "../../models/user";
 import {AuthenticationService} from "../../services/authentication.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
@@ -11,10 +11,10 @@ import {Router} from "@angular/router";
   selector: 'app-login',
   standalone: true,
     imports: [
-        CompanionInputDirective,
+        MuseInputDirective,
         FormsModule,
         ReactiveFormsModule,
-        CompanionButtonDirective
+        MuseButtonDirective
     ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -47,6 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         var user = new User();
         user.password = this.loginFormGroup.get('password')?.value || null;
         user.email = this.loginFormGroup.get('email')?.value || null;
+        user.username = user.email;
 
         this._attemptingLogin = true;
         this._authService.login(user);

@@ -1,10 +1,11 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
+using shared.models.@base;
 
 namespace shared.models;
 
 [Table("themes")]
-public class Theme : Model
+public class Theme : IdModel
 {
     [Column("name")]
     [JsonPropertyName("name")]

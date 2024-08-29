@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text.Json;
 using shared.models;
 using shared.models.data;
@@ -60,14 +61,21 @@ public class ImportBookTask : Task
     {
       File.Move(EpubEndPath, EpubTempPath);
     }
-
   }
 
   protected override bool Process()
   {
     var temp = Program.TempDirPath;
     var bookDir = Program.BookDir;
+    var currentUser = DbContext?.Users.FirstOrDefault(u => u.Id == this.QueuedTask.UserId);
 
+    if (currentUser == null)
+    {
+      QueuedTask.Message = "No user assigned to this task. Failing";
+      QueuedTask.Attempts = 3;
+      return false;
+    }
+    
     var epubPath = Path.Join(temp, FileName);
 
     EpubTempPath = epubPath;
@@ -77,8 +85,41 @@ public class ImportBookTask : Task
       QueuedTask.Message = $"Book doesn't exist in temp dir: {FileName}";
       return false;
     }
+
+    string bookHash = "";
+    
+    using (var md5 = MD5.Create())
+    {
+      using (var stream = File.OpenRead(EpubTempPath))
+      {
+        md5.ComputeHash(stream);
+        bookHash = md5.ToString();
+
+        var existingBookWithHash = DbContext?.Books.FirstOrDefault(book => book.Hash == bookHash);
+        
+        if (existingBookWithHash != null)
+        {
+          currentUser.Books.Add(existingBookWithHash);
+          QueuedTask.Message = "A book with a matching hash was found. Adding a link between the book and the current user.";
+
+          try
+          {
+            DbContext?.SaveChanges();
+          }
+          catch (Exception e)
+          {
+            QueuedTask.Message = "Failed to link existing book with user. Got error: " + e.Message;
+            return false;
+          }
+          
+          return true;
+        }
+      }
+    }
     
     _book = new Book();
+
+    _book.Hash = bookHash;
 
     var epub = EpubReader.ReadBook(epubPath);
 
@@ -90,8 +131,7 @@ public class ImportBookTask : Task
     }
 
     var author = epub.Author;
-
-
+    
     var containingDirectory = Path.Join(bookDir, author);
 
     if (!Directory.Exists(containingDirectory))
@@ -105,12 +145,29 @@ public class ImportBookTask : Task
     // If the file already exists as an imported epub, dont continue or retry
     if (File.Exists(newFilePath))
     {
-      _book = null;
-      QueuedTask.Message = "Book has already been imported!";
-      QueuedTask.Attempts = 3;
-      // Also delete the temp file.
-      File.Delete(epubPath);
-      return false;
+      var existingBook = DbContext?.Books.FirstOrDefault(b => b.Title == _book.Title);
+
+      if (existingBook == null)
+      {
+        //huh
+        QueuedTask.Message = "A book with matching title exist on file but not in database...";
+        QueuedTask.Attempts = 3;
+        return false;
+      }
+      
+      currentUser.Books.Add(existingBook);
+      QueuedTask.Message = "A book with a matching hash was found. Adding a link between the book and the current user.";
+
+      try
+      {
+        DbContext?.SaveChanges();
+      }
+      catch (Exception e)
+      {
+        QueuedTask.Message = "Failed to link existing book with user. Got error: " + e.Message;
+        return false;
+      }
+      return true;
     }
     
     EpubEndPath = newFilePath;
@@ -126,6 +183,7 @@ public class ImportBookTask : Task
     
     // _book.UserId = QueuedTask.UserId;
     _book.Path = newFilePath;
+    currentUser.Books.Add(_book);
 
     DbContext?.Books.Add(_book);
     try
@@ -138,6 +196,15 @@ public class ImportBookTask : Task
     }
     
     return true;
+  }
+
+  protected override void PostProcess()
+  {
+    if (EpubTempPath == null || !File.Exists(EpubTempPath))
+    {
+      return;
+    }
+    File.Delete(EpubTempPath);
   }
 
   private string GenerateFileNameFromTitle(string title)

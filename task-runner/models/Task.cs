@@ -49,6 +49,7 @@ public abstract class Task
     if (successfullyProcessed)
     {
       SetStatus(QueuedTaskStatus.Successful);
+      PostProcess();
     }
     else
     {
@@ -56,9 +57,6 @@ public abstract class Task
       Revert();
     }
     
-    
-    
-    PostProcess();
     
     return successfullyProcessed;
   }

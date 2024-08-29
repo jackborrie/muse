@@ -1,6 +1,6 @@
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {RequestService} from "./request.service";
-import {BehaviorSubject, Observable, Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {Theme} from "../models/theme";
 import {FilteredData} from "../models/filtered-data";
 
@@ -21,8 +21,8 @@ export class ThemeService {
     }
 
     public fetchAllThemes () {
-        this._request.getAll('api/themes', Theme, null)
-            .subscribe(themes => {
+        this._request.getAll<Theme>('api/themes', Theme, null)
+            .subscribe((themes: FilteredData<Theme> | null) => {
                 this._allThemes = themes;
                 this.$onAllThemesChange.next(this._allThemes);
             })
@@ -32,12 +32,27 @@ export class ThemeService {
         return this._allThemes ? this._allThemes.data : [];
     }
 
-    public getTheme (id: string){
+    public getThemeById (id: string){
         this._request.get('api/themes/' + id, Theme, null)
-            .subscribe(theme => {
+            .subscribe((theme: Theme | null) => {
+                if (theme == null) {
+                    return;
+                }
                 this._currentTheme = theme;
                 this.$onThemeChanged.next(this._currentTheme);
             });
+    }
+
+    private getDefaultTheme () {
+        this._request.get('api/themes/default', Theme, null)
+            .subscribe((theme: Theme | null) => {
+                if (theme == null) {
+                    return;
+                }
+
+                this._currentTheme = theme;
+                this.$onThemeChanged.next(this._currentTheme);
+            })
     }
 
     public setTheme (theme: Theme) {
@@ -50,7 +65,8 @@ export class ThemeService {
         const currentTheme = localStorage.getItem('theme');
 
         if (currentTheme == null) {
-            // do something
+            console.log('No theme found, using default.')
+            this.getDefaultTheme();
             return;
         }
 

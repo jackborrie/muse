@@ -94,6 +94,7 @@ public class TaskQueue
     Task? processTask = task.Function switch
     {
       TaskFunction.ImportBook => new ImportBookTask(task),
+      TaskFunction.DeleteBook => new DeleteBookTask(task),
       _ => null
     };
 

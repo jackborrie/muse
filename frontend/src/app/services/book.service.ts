@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {RequestService} from "./request.service";
 import {HttpHeaders} from "@angular/common/http";
+import {Book} from "../models/book";
 
 @Injectable({
     providedIn: 'root'
@@ -18,5 +19,9 @@ export class BookService {
         headers = headers.append('Accept', 'application/json');
 
         return this._request.post('api/books', formData, headers);
+    }
+
+    public getBooks () {
+        return this._request.getAll<Book>('api/books', Book, null);
     }
 }

@@ -6,10 +6,10 @@ export type IconPos = 'left' | 'right';
 export type ButtonColor = 'primary' | 'accent';
 
 @Directive({
-    selector: 'button[cButton]',
+    selector: 'button[mButton]',
     standalone: true,
 })
-export class CompanionButtonDirective implements OnInit {
+export class MuseButtonDirective implements OnInit {
 
     @Input()
     icon?: string;
@@ -22,8 +22,8 @@ export class CompanionButtonDirective implements OnInit {
     @Input()
     allowSSR: boolean = false;
 
-    protected readonly BUTTON_CLASS = 'mimic-button';
-    protected readonly ICON_BUTTON_CLASS = 'mimic-icon-button';
+    protected readonly BUTTON_CLASS = 'muse-button';
+    protected readonly ICON_BUTTON_CLASS = 'muse-icon-button';
 
     constructor(
         protected el: ElementRef,
@@ -54,7 +54,7 @@ export class CompanionButtonDirective implements OnInit {
 
         if (this.text != null && !isIconOnly) {
             const textElement = this.renderer.createText(this.text);
-            this.el.nativeElement.appendChild(textElement);
+            this.el.nativeElement.insertBefore(textElement, this.el.nativeElement.firstChild);
         }
 
         if (this.icon != null) {
