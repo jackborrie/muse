@@ -53,5 +53,8 @@ public class Book : IdModel
     public DateTime CreationDate { get; set; }
 
 
+    [JsonIgnore]
     public List<User> Users { get; set; } = [];
+    [JsonPropertyName("authors")]  
+    public List<Author> Authors { get; set; } = [];
 }

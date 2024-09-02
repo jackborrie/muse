@@ -15,6 +15,7 @@ public class MuseContext : IdentityDbContext<User>
     public new DbSet<User> Users { get; init; }
     public DbSet<Theme> Themes { get; init; }
     public DbSet<Book> Books { get; init; }
+    public DbSet<Author> Authors { get; init; }
     public DbSet<Collection> Collections { get; init; }
     public DbSet<QueuedTask> Tasks { get; init; }
     public DbSet<UserBook> UserBooks { get; init; }
@@ -25,6 +26,14 @@ public class MuseContext : IdentityDbContext<User>
             .HasMany<Book>(b => b.Books)
             .WithMany(e => e.Users)
             .UsingEntity<UserBook>();
+        
+        modelBuilder.Entity<Author>()
+            .HasMany<Book>(b => b.Books)
+            .WithMany(e => e.Authors)
+            .UsingEntity<AuthorBook>(
+                b => b.HasOne<Book>().WithMany().HasForeignKey(ub => ub.BookId),
+                u => u.HasOne<Author>().WithMany().HasForeignKey(ub => ub.AuthorId)
+            );
         
         base.OnModelCreating(modelBuilder);
     }

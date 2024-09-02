@@ -57,7 +57,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().WithOrigins(new []{"http://localhost:4201"}).AllowCredentials());
+app.UseCors(options => options.AllowAnyMethod().AllowAnyHeader().WithOrigins(new []{"http://localhost:4201", "https://jackborrie.github.io"}).AllowCredentials());
 
 app.UseHttpsRedirection();
 

@@ -9,6 +9,7 @@ public class TaskRunnerContext : DbContext
 {
   public DbSet<QueuedTask> Tasks { get; set; }
   public DbSet<Book> Books { get; set; }
+  public DbSet<Author> Authors { get; set; }
   
   public DbSet<User> Users { get; set; }
   
@@ -36,5 +37,13 @@ public class TaskRunnerContext : DbContext
           b => b.HasOne<Book>().WithMany().HasForeignKey(ub => ub.BookId),
           u => u.HasOne<User>().WithMany().HasForeignKey(ub => ub.UserId)
         );
+    
+    modelBuilder.Entity<Author>()
+      .HasMany<Book>(b => b.Books)
+      .WithMany(e => e.Authors)
+      .UsingEntity<AuthorBook>(
+        b => b.HasOne<Book>().WithMany().HasForeignKey(ub => ub.BookId),
+        u => u.HasOne<Author>().WithMany().HasForeignKey(ub => ub.AuthorId)
+      );
   }
 }

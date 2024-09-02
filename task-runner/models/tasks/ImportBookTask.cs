@@ -198,6 +198,16 @@ public class ImportBookTask : Task
     currentUser.Books.Add(_book);
 
     DbContext?.Books.Add(_book);
+    
+    // Add authors
+
+    foreach (var authorString in authors)
+    {
+      var bookAuthor = FetchAuthor(authorString);
+      
+      _book.Authors.Add(bookAuthor);
+    }
+    
     try
     {
       DbContext?.SaveChanges();
@@ -208,6 +218,20 @@ public class ImportBookTask : Task
     }
     
     return true;
+  }
+
+  private Author FetchAuthor(string authorName)
+  {
+    var author = DbContext?.Authors.FirstOrDefault(a => a.Name == authorName);
+
+    if (author == null)
+    {
+      author = new Author();
+
+      author.Name = authorName;
+    }
+
+    return author;
   }
 
   protected override void PostProcess()

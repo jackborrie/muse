@@ -50,6 +50,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
         let sidebarHeightSub = this._state.$onSidebarHeightChanged.subscribe(height => {
             height = height - 66 - 66 - (convertRemToPixels(1) * 2);
 
+            if (this.allBooks == null) {
+                return;
+            }
+
             this.renderer.setStyle(this.allBooks.nativeElement, 'maxHeight', height + 'px');
             this.renderer.setStyle(this.allBooks.nativeElement, 'minHeight', height + 'px');
         });
@@ -77,6 +81,10 @@ export class BooksComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
+        if (!this.bookContainer || !this.allBooks) {
+            return;
+        }
+
         let height = this.bookContainer.nativeElement.clientHeight;
 
         this.renderer.setStyle(this.allBooks.nativeElement, 'maxHeight', height + 'px');

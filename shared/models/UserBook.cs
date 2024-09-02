@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.InteropServices.JavaScript;
 using System.Text.Json.Serialization;
 using shared.models.Identity;
 
@@ -15,7 +16,7 @@ public class UserBook : Model
     public string? BookId { get; set; }
 
     [Column("creation_date")] 
-    public DateTime CreationDate { get; set; }
+    public DateTime CreationDate { get; set; } = DateTime.Now;
 
     [NotMapped]
     public List<User> Users { get; set; } = [];
