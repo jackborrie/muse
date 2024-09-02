@@ -60,6 +60,7 @@ jobs:
         working-directory: ./frontend
         run: npm i
       - name: Build the front-end
+        working-directory: ./frontend
         run: ng build --output-path dist --base-href /muse/ --configuration=production
   test:
     needs: build
