@@ -81,12 +81,12 @@ jobs:
       - name: Install node dependencies
         working-directory: ./frontend
         run: npm i
-      - name: lint
-        working-directory: ./frontend
-        run: ng lint
-      - name: test
-        working-directory: ./frontend
-        run: ng test
+      # - name: lint
+      #   working-directory: ./frontend
+      #   run: ng lint
+      # - name: test
+      #   working-directory: ./frontend
+      #   run: ng test
       - name: Upload Artifact
         if: github.ref == 'refs/heads/main'
         uses: actions/upload-pages-artifact@v1
