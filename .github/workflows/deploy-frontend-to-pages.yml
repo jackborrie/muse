@@ -22,8 +22,27 @@ concurrency:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  setup:
-    # The type of runner that the job will run on
+  # setup:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+  #     - uses: actions/checkout@v4
+
+  #     - name: Setup Node.js environment
+  #       uses: actions/setup-node@v4.0.3
+  #       with:
+  #         node-version: '18.19.1'
+
+  #     - name: Add angular cli
+  #       working-directory: ./frontend
+  #       run: npm i -g @angular/cli
+
+  #     - name: Install node dependencies
+  #       working-directory: ./frontend
+  #       run: npm i
+  build:
+    needs: setup
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -41,17 +60,28 @@ jobs:
       - name: Install node dependencies
         working-directory: ./frontend
         run: npm i
-  build:
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
       - name: Build the front-end
         run: ng build --output-path dist --base-href /muse/ --configuration=production
   test:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: link
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.3
+        with:
+          node-version: '18.19.1'
+
+      - name: Add angular cli
+        working-directory: ./frontend
+        run: npm i -g @angular/cli
+
+      - name: Install node dependencies
+        working-directory: ./frontend
+        run: npm i
+      - name: lint
         working-directory: ./frontend
         run: ng lint
       - name: test
@@ -65,7 +95,7 @@ jobs:
           path: "./frontend/dist/browser"
   deploy:
     if: github.ref == 'refs/heads/main'
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       pages: write
