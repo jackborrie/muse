@@ -30,13 +30,12 @@ jobs:
         with:
           node-version: '18.19.1'
 
-      - name: Cd into the correct folder.
-        run: cd frontend
-
       - name: Add angular cli
+        working-directory: ./frontend
         run: npm i
         # run: npm i -g @angular/cli
 
       - name: Build the front-end
+        working-directory: ./frontend
         run: ng build --output-path docs --base-href /muse/
         
