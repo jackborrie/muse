@@ -37,7 +37,6 @@ jobs:
       - name: Add angular cli
         working-directory: ./frontend
         run: npm i -g @angular/cli
-        # run: npm i -g @angular/cli
 
       - name: Install node dependencies
         working-directory: ./frontend
@@ -47,7 +46,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Build the front-end
-        working-directory: ./frontend
         run: ng build --output-path dist --base-href /muse/ --configuration=production
   test:
     needs: build
