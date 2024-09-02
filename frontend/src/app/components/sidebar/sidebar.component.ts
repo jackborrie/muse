@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {MuseButtonDirective}          from "../../directives/muse-button.directive";
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {MuseButtonDirective}                      from "../../directives/muse-button.directive";
 import {DropdownComponent}            from "../dropdown/dropdown.component";
 import {FilteredData} from "../../models/filtered-data";
 import {Theme} from "../../models/theme";
@@ -13,6 +13,7 @@ import {User} from "../../models/user";
 import {CommonModule, NgIf} from "@angular/common";
 import {BookService} from "../../services/book.service";
 import {RouterLink} from "@angular/router";
+import {StateService} from "../../services/state.service";
 
 export interface FileUploadInterface {
     uploaded: boolean;
@@ -40,8 +41,12 @@ export class SidebarComponent implements OnInit {
     @ViewChild(ModalComponent)
     AddNewModal!: ModalComponent;
 
+    @ViewChild('sidebar')
+    sidebar!: ElementRef;
+
     protected themes: FilteredData<Theme> | null = null;
 
+    protected draggingOver = false;
 
     protected uploads: {[key: string]: FileUploadInterface} = {};
 
@@ -61,7 +66,8 @@ export class SidebarComponent implements OnInit {
 
     public constructor(
         private _themes: ThemeService,
-        private _books: BookService
+        private _books: BookService,
+        private _state: StateService
     ) {
     }
 
@@ -80,6 +86,13 @@ export class SidebarComponent implements OnInit {
         }
     }
 
+    protected handleResize () {
+        let height = this.sidebar.nativeElement.clientHeight;
+
+        this._state.setHeight(height);
+
+    }
+
     public handleThemeSelect(theme: Theme) {
         this._themes.setTheme(theme);
     }
@@ -94,10 +107,6 @@ export class SidebarComponent implements OnInit {
         this._uploadBooks(event.dataTransfer.items);
     }
 
-    protected handleDragOver (event: DragEvent) {
-        // console.log(event)
-    }
-
     protected handleFileUpload (event: any) {
         let fileList: FileList = event.target.files;
 
@@ -106,6 +115,16 @@ export class SidebarComponent implements OnInit {
         }
 
         this._uploadBooks(fileList);
+    }
+
+    protected handleDragEnter () {
+        console.log('enter');
+        this.draggingOver = true
+    }
+
+    protected handleDragLeave () {
+        console.log('leave');
+        this.draggingOver = false
     }
 
     private _uploadBooks (files: any) {
@@ -117,8 +136,12 @@ export class SidebarComponent implements OnInit {
                 file: file
             }
 
+            console.log('uploading file: ' + file.name)
             this._books.uploadBook(file).subscribe (result => {
                 this.uploads[file.name].uploaded = true;
+            }, error => {
+                console.log('Book failed to upload: ' + file.name);
+                this.uploads = {};
             })
         }
     }

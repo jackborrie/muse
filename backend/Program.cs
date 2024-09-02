@@ -1,4 +1,5 @@
 using backend;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using shared.models.Identity;
@@ -28,6 +29,12 @@ builder.Services.AddIdentityCore<User>()
     .AddEntityFrameworkStores<MuseContext>()
     .AddApiEndpoints();
 
+builder.Services.Configure<FormOptions>(x =>
+{
+    x.ValueLengthLimit = 1073741824;
+    x.MultipartBodyLengthLimit = 1073741824;
+    x.MultipartHeadersLengthLimit = 1073741824; 
+});
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

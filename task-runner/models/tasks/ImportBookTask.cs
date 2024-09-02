@@ -92,13 +92,23 @@ public class ImportBookTask : Task
     {
       using (var stream = File.OpenRead(EpubTempPath))
       {
-        md5.ComputeHash(stream);
-        bookHash = md5.ToString();
+        var hash = md5.ComputeHash(stream);
+
+        bookHash = BitConverter.ToString(hash).Replace("-", "");
 
         var existingBookWithHash = DbContext?.Books.FirstOrDefault(book => book.Hash == bookHash);
         
+        
         if (existingBookWithHash != null)
         {
+          var existingUserBook = DbContext?.UserBooks.FirstOrDefault(ub =>
+            ub.BookId == existingBookWithHash.Id && ub.UserId == currentUser.Id);
+
+          if (existingUserBook != null)
+          {
+            return true;
+          }
+
           currentUser.Books.Add(existingBookWithHash);
           QueuedTask.Message = "A book with a matching hash was found. Adding a link between the book and the current user.";
 
@@ -131,6 +141,8 @@ public class ImportBookTask : Task
     }
 
     var author = epub.Author;
+
+    var authors = epub.AuthorList;
     
     var containingDirectory = Path.Join(bookDir, author);
 

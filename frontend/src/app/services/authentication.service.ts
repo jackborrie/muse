@@ -127,4 +127,8 @@ export class AuthenticationService {
     public getAccessToken (): string | null {
         return this._accessToken;
     }
+
+    public logout () {
+        localStorage.removeItem('access_token');
+    }
 }

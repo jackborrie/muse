@@ -24,8 +24,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
     public constructor(
         private _themes: ThemeService,
-        private _authService: AuthenticationService,
-        private _books: BookService
+        private _authService: AuthenticationService
     ) {
     }
 
@@ -51,10 +50,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this._authService.attemptLogin();
 
         this._subscriptions.add(authSub);
-
-        this._books.getBooks().subscribe(data => {
-            console.log(data);
-        })
     }
 
     ngOnDestroy() {

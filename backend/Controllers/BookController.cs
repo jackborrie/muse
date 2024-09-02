@@ -117,7 +117,11 @@ public class BookController : ControllerBase
         {
             // Paginate
             userBooks = userBooks.Skip(page * pageSize.Value).Take(pageSize.Value);
-            filtered.TotalPages = total / pageSize.Value;
+            var pages = total / (decimal)pageSize.Value;
+
+            var totalPages = Math.Ceiling(pages);
+            
+            filtered.TotalPages = (int)totalPages;
         }
         else
         {

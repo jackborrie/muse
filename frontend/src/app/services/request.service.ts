@@ -1,7 +1,7 @@
 import {Injectable}              from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map, Observable}         from 'rxjs';
-import {Model}                   from '../models/model';
+import {HttpClient, HttpHeaders}            from '@angular/common/http';
+import {catchError, EMPTY, map, Observable} from 'rxjs';
+import {Model}                              from '../models/model';
 import {FilteredData}            from "../models/filtered-data";
 import {AuthenticationService} from "./authentication.service";
 
@@ -34,7 +34,15 @@ export class RequestService {
                 m.serialise(data);
 
                 return m;
-            })
+            }, catchError((e, t) => {
+                if (e.status == 401) {
+                    // Unauthorized
+                    this._auth.logout();
+
+                    console.log('test');
+                }
+                return EMPTY;
+            }))
         );
     }
 
@@ -63,7 +71,18 @@ export class RequestService {
 
                     filteredData.data = outputList;
 
+                    // @ts-ignore
+                    filteredData.totalPages = filteredData['total_pages'];
+                    // @ts-ignore
+                    delete filteredData['total_pages'];
+
                     return filteredData;
+                }), catchError((e, t) => {
+                    if (e.status == 401) {
+                        // Unauthorized
+                        this._auth.logout();
+                    }
+                    return EMPTY
                 })
             );
     }
@@ -75,7 +94,16 @@ export class RequestService {
 
         headers = this._addAuthenticationHeaders(headers);
 
-        return this._httpClient.post(this._baseUrl + '/' + route, body, {headers: headers});
+        return this._httpClient.post(this._baseUrl + '/' + route, body, {headers: headers})
+            .pipe (
+                catchError((e, t) => {
+                    if (e.status == 401) {
+                        // Unauthorized
+                        this._auth.logout();
+                    }
+                    return EMPTY;
+                })
+            );
     }
 
     public put(route: string, body: { [key: string]: any } | null, headers?: HttpHeaders) {
@@ -85,7 +113,16 @@ export class RequestService {
 
         headers = this._addAuthenticationHeaders(headers);
 
-        return this._httpClient.put(this._baseUrl + '/' + route, body, {headers: headers});
+        return this._httpClient.put(this._baseUrl + '/' + route, body, {headers: headers})
+            .pipe (
+                catchError((e, t) => {
+                    if (e.status == 401) {
+                        // Unauthorized
+                        this._auth.logout();
+                    }
+                    return EMPTY;
+                })
+            );
     }
 
     public delete(route: string, headers?: HttpHeaders) {
@@ -95,7 +132,16 @@ export class RequestService {
 
         headers = this._addAuthenticationHeaders(headers);
 
-        return this._httpClient.delete(this._baseUrl + '/' + route, {headers: headers});
+        return this._httpClient.delete(this._baseUrl + '/' + route, {headers: headers})
+            .pipe (
+                catchError((e, t) => {
+                    if (e.status == 401) {
+                        // Unauthorized
+                        this._auth.logout();
+                    }
+                    return EMPTY;
+                })
+            );
     }
 
     public download (route: string) {
@@ -103,7 +149,16 @@ export class RequestService {
 
         headers = this._addAuthenticationHeaders(headers);
 
-        return this._httpClient.get(this._baseUrl + '/' + route, { responseType: 'blob', headers: headers });
+        return this._httpClient.get(this._baseUrl + '/' + route, { responseType: 'blob', headers: headers })
+            .pipe (
+                catchError((e, t) => {
+                    if (e.status == 401) {
+                        // Unauthorized
+                        this._auth.logout();
+                    }
+                    return EMPTY;
+                })
+            );
     }
 
     private _addAuthenticationHeaders (headers: HttpHeaders): HttpHeaders {

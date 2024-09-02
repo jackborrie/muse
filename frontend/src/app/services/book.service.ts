@@ -21,7 +21,18 @@ export class BookService {
         return this._request.post('api/books', formData, headers);
     }
 
-    public getBooks () {
-        return this._request.getAll<Book>('api/books', Book, null);
+    public getBooks (page: number = 0, pageSize: number = 25, sortBy: string | null = null, sortDirection: string | null = null) {
+        var header = new HttpHeaders();
+        var queryParams = `page=${page}`;
+        queryParams += `&pageSize=${pageSize}`;
+
+        if (sortBy != null) {
+            queryParams += `&sortBy=${sortBy}`;
+        }
+
+        if (sortDirection != null) {
+            queryParams += `&sortDirection=${sortDirection}`;
+        }
+        return this._request.getAll<Book>(`api/books?${queryParams}`, Book, header);
     }
 }

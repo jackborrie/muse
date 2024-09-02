@@ -1,4 +1,4 @@
-<div class="sidebar-container">
+<div #sidebar (window:resize)="handleResize()" class="sidebar-container">
     <div class="sidebar d-flex f-column row-gap-1">
         <div class="top d-flex f-column row-gap-1">
             <button mButton [icon]="homeIcon" title="home" routerLink="dashboard">
@@ -10,8 +10,10 @@
             <m-dropdown icon="ph-plus" title="add new" dropdownPosition="right-top">
                 <div class="file-drop-container">
                     <div id="drop-zone"
-                         (drop)="handleFileDrop($event);"
-                         (dragover)="handleDragOver($event);"
+                         [ngClass]="{'drag-over': draggingOver}"
+                         (drop)="handleFileDrop($event)"
+                         (dragenter)="handleDragEnter()"
+                         (dragleave)="handleDragLeave()"
                          (click)="fileInput.click()">
                         <div class="upload-list" *ngIf="uploading">
                             <span *ngFor="let upload of uploads | keyvalue">
@@ -19,11 +21,11 @@
                             </span>
                         </div>
                         <ng-container *ngIf="!uploading">
-                            <i class="ph ph-upload"></i>
-                            <span>Drag books</span>
-                            <span>or click here</span>
+<!--                            <i class="ph ph-upload"></i>-->
+<!--                            <span>Drag books</span>-->
+                            <span>Click here</span>
                         </ng-container>
-                        <input #fileInput type="file" accept=".epub" style="opacity: 0" (change)="handleFileUpload($event)">
+                        <input #fileInput type="file" accept=".epub" multiple="multiple" style="opacity: 0" (change)="handleFileUpload($event)" hidden>
                     </div>
                 </div>
             </m-dropdown>

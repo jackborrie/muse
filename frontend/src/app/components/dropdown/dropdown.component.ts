@@ -82,7 +82,6 @@ export class DropdownComponent implements AfterViewInit {
         }
 
         this.isDropdownDown = false;
-        // this.closed.emit();
     }
 
     private _calculateDropdownPosition () {
