@@ -25,6 +25,14 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
 
+      - name: Cache
+        uses: actions/cache@v4.0.2
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: ./frontend/node_modules
+          # An explicit key for restoring and saving the cache
+          key: node-modules
+
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.3
         with:
@@ -41,5 +49,5 @@ jobs:
 
       - name: Build the front-end
         working-directory: ./frontend
-        run: npm run build --output-path docs --base-href /muse/
+        run: ng build --output-path docs --base-href /muse/
         
