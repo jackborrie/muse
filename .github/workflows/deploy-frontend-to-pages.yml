@@ -32,8 +32,12 @@ jobs:
 
       - name: Add angular cli
         working-directory: ./frontend
-        run: npm i
+        run: npm i -g @angular/cli
         # run: npm i -g @angular/cli
+
+      - name: Install node dependencies
+        working-directory: ./frontend
+        run: npm i
 
       - name: Build the front-end
         working-directory: ./frontend
