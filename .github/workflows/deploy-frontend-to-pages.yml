@@ -41,5 +41,5 @@ jobs:
 
       - name: Build the front-end
         working-directory: ./frontend
-        run: ng build --output-path docs --base-href /muse/
+        run: npm run build --output-path docs --base-href /muse/
         
