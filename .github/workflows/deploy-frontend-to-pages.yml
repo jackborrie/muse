@@ -34,7 +34,8 @@ jobs:
         run: cd frontend
 
       - name: Add angular cli
-        run: npm i -g @angular/cli
+        run: npm i
+        # run: npm i -g @angular/cli
 
       - name: Build the front-end
         run: ng build --output-path docs --base-href /muse/
