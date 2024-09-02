@@ -59,7 +59,7 @@ jobs:
 
       - name: Build the front-end
         working-directory: ./frontend
-        run: ng build --output-path docs --base-href /muse/ --configuration production
+        run: ng build --output-path dist --base-href /muse/ --configuration production
       - name: Deploy to gh pages
         working-directory: ./frontend
         run: |
