@@ -59,29 +59,11 @@ jobs:
 
       - name: Build the front-end
         working-directory: ./frontend
-        run: ng build --output-path ../docs --base-href /muse/ --configuration production
-  deploy:
-    needs: build
-
-    permissions: 
-      pages: write
-      id-token: write
-
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.output.page_url }}
-
-    runs-on: ubuntu-latest
-    steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: ls
-        run: ls
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: './docs'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+        run: ng build --output-path docs --base-href /muse/ --configuration production
+      - name: Deploy to gh pages
+        working-directory: ./frontend
+        run: |
+          npx angular-cli-ghpages --dir=dist/browser
+        env:
+          CI: true
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
