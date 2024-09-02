@@ -62,6 +62,9 @@ jobs:
       - name: Build the front-end
         working-directory: ./frontend
         run: ng build --output-path dist --base-href /muse/ --configuration=production
+      - name: Copy index to 404
+        working-directory: ./frontend
+        run: cp ./browser/index.html ./browser/404.html
       # - name: lint
       #   working-directory: ./frontend
       #   run: ng lint
