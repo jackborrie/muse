@@ -106,8 +106,6 @@ namespace backend.Controllers
             }
 
             return await MakeRequestToKoboStore(url);
-
-            return Ok();
         }
         
         private string Base64Encode(string plainText) 
@@ -154,7 +152,7 @@ namespace backend.Controllers
             var httpClient = new HttpClient();
             HttpResponseMessage? result = null;
             
-            using (var requestMessage = new HttpRequestMessage(method, _koboStoreUrl + url))
+            using (var requestMessage = new HttpRequestMessage(method, _koboStoreUrl + "/" + url))
             {
                 Copy(requestMessage.Headers, headers);
                 
@@ -166,12 +164,18 @@ namespace backend.Controllers
 
                 requestMessage.Content = new StringContent(bodyStr);
 
-                result = await httpClient.SendAsync(requestMessage);
+                try
+                {
+                    result = await httpClient.SendAsync(requestMessage);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError("Failed to redirect unknown route... " + ex.ToString());
+                }
             }
-
-            _logger.LogInformation(result.ToString());
+            _logger.LogError(result.Content.ToString());
             
-            return Ok();
+            return Ok(result.Content);
         }
         
         private void Copy<T, U>(IEnumerable<KeyValuePair<string, T>>? from, IEnumerable<KeyValuePair<string, U>>? to)

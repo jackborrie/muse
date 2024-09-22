@@ -6,6 +6,7 @@ import {User}                                                      from "../../m
 import {AuthenticationService} from "../../services/authentication.service";
 import {Subscription} from "rxjs";
 import {Router} from "@angular/router";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,8 @@ import {Router} from "@angular/router";
         MuseInputDirective,
         FormsModule,
         ReactiveFormsModule,
-        MuseButtonDirective
+        MuseButtonDirective,
+        NgIf
     ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -23,8 +25,11 @@ export class LoginComponent implements OnInit, OnDestroy{
 
     protected loginFormGroup = this._formBuilder.group({
         email: ['', [Validators.required, Validators.email]],
-        password: ['', Validators.required]
+        password: ['', Validators.required],
+        username: ['']
     })
+
+    protected currentScreen: 'login' | 'register' = 'login';
 
     private _subscription: Subscription = new Subscription();
     private _attemptingLogin = false;
@@ -44,13 +49,35 @@ export class LoginComponent implements OnInit, OnDestroy{
             return;
         }
 
-        var user = new User();
+        let user = new User();
         user.password = this.loginFormGroup.get('password')?.value || null;
         user.email = this.loginFormGroup.get('email')?.value || null;
-        user.username = user.email;
+
+        if (this.currentScreen == 'login') {
+            user.username = user.email;
+        } else {
+            user.username = this.loginFormGroup.get('username')?.value || null;
+        }
 
         this._attemptingLogin = true;
-        this._authService.login(user);
+
+        if (this.currentScreen == 'login') {
+            this._authService.login(user);
+        } else {
+            this._authService.register(user);
+        }
+    }
+
+    protected switchScreen () {
+        if (this.currentScreen === 'register') {
+            this.currentScreen = 'login';
+
+            this.loginFormGroup.get('username')?.addValidators([Validators.required, Validators.minLength(5), Validators.maxLength(20)])
+        } else {
+            this.currentScreen = 'register';
+
+            this.loginFormGroup.get('username')?.removeValidators([Validators.required, Validators.minLength(5), Validators.maxLength(20)])
+        }
     }
 
     ngOnInit () {
@@ -66,8 +93,10 @@ export class LoginComponent implements OnInit, OnDestroy{
 
                 this._router.navigate(['/']);
             });
+
+        this._subscription.add(authChange);
     }
     ngOnDestroy () {
-
+        this._subscription.unsubscribe()
     }
 }

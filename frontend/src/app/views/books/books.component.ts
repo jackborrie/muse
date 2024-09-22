@@ -1,11 +1,11 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MuseInputDirective}                       from "../../directives/muse-input.directive";
-import {MuseButtonDirective}              from "../../directives/muse-button.directive";
-import {DropdownComponent}                from "../../components/dropdown/dropdown.component";
-import {BookService}                      from "../../services/book.service";
-import {Book}                             from "../../models/book";
-import {NgForOf, NgIf}                    from "@angular/common";
-import {GridComponent}                    from "../../components/grid/grid.component";
+import {MuseInputDirective} from "../../directives/muse-input.directive";
+import {MuseButtonDirective} from "../../directives/muse-button.directive";
+import {DropdownComponent} from "../../components/dropdown/dropdown.component";
+import {BookService} from "../../services/book.service";
+import {Book} from "../../models/book";
+import {NgForOf, NgIf} from "@angular/common";
+import {GridComponent} from "../../components/grid/grid.component";
 
 @Component({
     selector: 'app-books',
