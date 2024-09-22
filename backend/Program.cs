@@ -63,6 +63,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
+app.UseWebSockets();
+
 app.MapIdentityApi<User>();
 app.MapControllers();
 

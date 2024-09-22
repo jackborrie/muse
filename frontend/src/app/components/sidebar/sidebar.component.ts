@@ -1,5 +1,5 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {MuseButtonDirective}                      from "../../directives/muse-button.directive";
+import {AfterContentChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {MuseButtonDirective}                                           from "../../directives/muse-button.directive";
 import {DropdownComponent}            from "../dropdown/dropdown.component";
 import {FilteredData} from "../../models/filtered-data";
 import {Theme} from "../../models/theme";
@@ -14,6 +14,7 @@ import {CommonModule, NgIf} from "@angular/common";
 import {BookService} from "../../services/book.service";
 import {RouterLink} from "@angular/router";
 import {StateService} from "../../services/state.service";
+import {convertRemToPixels} from "../../lib/convert-rem-to-pixels";
 
 export interface FileUploadInterface {
     uploaded: boolean;
@@ -36,7 +37,7 @@ export interface FileUploadInterface {
     templateUrl: './sidebar.component.html',
     styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterContentChecked {
 
     @ViewChild(ModalComponent)
     AddNewModal!: ModalComponent;
@@ -67,7 +68,8 @@ export class SidebarComponent implements OnInit {
     public constructor(
         private _themes: ThemeService,
         private _books: BookService,
-        private _state: StateService
+        private _state: StateService,
+        private _authService: AuthenticationService
     ) {
     }
 
@@ -86,10 +88,20 @@ export class SidebarComponent implements OnInit {
         }
     }
 
-    protected handleResize () {
-        let height = this.sidebar.nativeElement.clientHeight;
+    ngAfterContentChecked () {
+        this.handleResize();
+    }
 
-        this._state.setHeight(height);
+    protected handleResize () {
+        if (this.sidebar == null) {
+            return;
+        }
+
+        let sidebarRect = this.sidebar.nativeElement.getBoundingClientRect();
+        // Calculate the expected height of the sidebar based on the window's inner height and the current sidebar offset
+        let screenHeight = window.innerHeight - sidebarRect.top - convertRemToPixels(1);
+
+        this._state.setHeight(screenHeight);
 
     }
 
@@ -118,13 +130,15 @@ export class SidebarComponent implements OnInit {
     }
 
     protected handleDragEnter () {
-        console.log('enter');
         this.draggingOver = true
     }
 
     protected handleDragLeave () {
-        console.log('leave');
         this.draggingOver = false
+    }
+
+    protected handleSignOut () {
+        this._authService.logout();
     }
 
     private _uploadBooks (files: any) {

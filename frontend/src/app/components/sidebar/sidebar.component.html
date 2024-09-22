@@ -5,9 +5,11 @@
             </button>
             <button mButton icon="ph-book" title="books" routerLink="books">
             </button>
+            <button mButton icon="ph-folders" title="collections" routerLink="collections">
+            </button>
         </div>
         <div class="bottom d-flex f-column row-gap-1">
-            <m-dropdown icon="ph-plus" title="add new" dropdownPosition="right-top">
+            <m-dropdown icon="ph-plus" title="add new book" dropdownPosition="right-top">
                 <div class="file-drop-container">
                     <div id="drop-zone"
                          [ngClass]="{'drag-over': draggingOver}"
@@ -36,6 +38,8 @@
                     }
                 }
             </m-dropdown>
+            <button mButton icon="ph-sign-out" title="sign out" (click)="handleSignOut()">
+            </button>
         </div>
     </div>
 </div>

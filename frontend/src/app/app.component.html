@@ -1,8 +1,18 @@
-<div class="{{currentTheme ? currentTheme.className : 'catppuccin-mocha'}} companion d-flex f-row" style="{{currentTheme?.style}}">
-    <div class="sidebar-container" [hidden]="!isLoggedIn">
-        <app-sidebar></app-sidebar>
+<div class="{{currentTheme ? currentTheme.className : 'nord-dark'}} muse d-flex f-column" style="{{currentTheme?.style}}">
+    <div class="header d-flex f-row" *ngIf="isLoggedIn">
+        <div class="app-icon d-flex">
+            <i class="ph ph-finn-the-human"></i>
+        </div>
+        <div class="header-container">
+            <app-header></app-header>
+        </div>
     </div>
-    <div class="content-container">
-        <router-outlet></router-outlet>
+    <div class="content d-flex f-row">
+        <div class="sidebar-container" [hidden]="!isLoggedIn">
+            <app-sidebar></app-sidebar>
+        </div>
+        <div class="content-container">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 </div>

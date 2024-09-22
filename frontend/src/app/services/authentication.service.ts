@@ -40,14 +40,6 @@ export class AuthenticationService {
     public login (user: User) {
         this._httpClient.post<LoginResult>('http://localhost:5158/login', user)
             .subscribe((result: LoginResult) => {
-
-                /*
-                    accessToken: "CfDJ8JJU6mvZMbxGk9nvM3BCxys4xNNCJ84bu1PbEtbtKs_L6ZR0npWnnrQpYXnINM_-LG7rG0brWI8CFYC4ansWqM6zKjSMlrQQ_guUq5laL6AlxuvEAwGxYibJtGfhUCrqgi_hKN20yNKd7UwjYVWADKs1J2le8b24hdz2e2ObRQxz-ghopwNP2PwejtbqTOCE1DFNEwl2xNuJFRdv0ll4M_8yDJeADc_jxUpNNUF90V_SUylOxKc6WMQIqBpG6ydv6A"
-                    expiresIn: 3600
-                    refreshToken: "CfDJ8JJU6mvZMbxGk9nvM3BCxyuWbOG-_FHIMOp53S4XUW6lVr83ZWnWB5qOFWclQMfQ92sc7hO2YOVnPzfx-GgYDXS9PUtUIWhbGZ-mTibmH44dEsI9VL70lG_wU6odoQ0224CCh6Ea84QhFilU2AzcJevP1D8ni5wALkbPLt7N24PaWYYNWg-WU3FkD6lE832xL9d4NZSxQNLz6ReAhITHcDgKZXc6a1hsJVQVBxL5cF4wak1OgqKtPd5E2yyZbvXivw"
-                    tokenType: "Bearer"
-                 */
-
                 this._accessToken = result.accessToken;
                 this._refreshToken = result.refreshToken;
                 this._expiresIn = result.expiresIn;
@@ -120,7 +112,7 @@ export class AuthenticationService {
                 this._storeDetails();
                 this.$onIsLoggedInChanged.next(this.isAuthenticated);
             }, () => {
-                this.$onIsLoggedInChanged.next(false);
+                this.logout();
             })
     }
 
@@ -129,6 +121,11 @@ export class AuthenticationService {
     }
 
     public logout () {
-        localStorage.removeItem('access_token');
+        localStorage.clear();
+        this._router.navigate(['login']);
+        this._accessToken = null;
+        this._expiresIn = 0;
+        this._refreshToken = null;
+        this.$onIsLoggedInChanged.next(this.isAuthenticated);
     }
 }

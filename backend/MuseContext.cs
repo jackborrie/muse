@@ -34,6 +34,11 @@ public class MuseContext : IdentityDbContext<User>
                 b => b.HasOne<Book>().WithMany().HasForeignKey(ub => ub.BookId),
                 u => u.HasOne<Author>().WithMany().HasForeignKey(ub => ub.AuthorId)
             );
+
+        modelBuilder.Entity<User>()
+            .HasMany<Collection>(b => b.Collections)
+            .WithOne(e => e.User)
+            .HasForeignKey(e => e.UserId);
         
         base.OnModelCreating(modelBuilder);
     }

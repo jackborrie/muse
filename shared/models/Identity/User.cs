@@ -9,4 +9,5 @@ public class User : IdentityUser
 
 
     public List<Book> Books { get; set; } = [];
+    public List<Collection> Collections { get; set; } = [];
 }
