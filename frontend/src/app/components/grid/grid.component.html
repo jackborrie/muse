@@ -1,0 +1,45 @@
+<div class="grid">
+    <div class="top-bar">
+        <input mInput type="text" class="search-input">
+        <m-dropdown icon="ph-funnel" dropdownPosition="bottom-left"></m-dropdown>
+    </div>
+    <div #rowsContainer class="all-rows-container">
+        <div #allRows class="all-rows">
+            <div class="row" *ngFor="let row of rows" (dblclick)="handleDoubleClick(row.id)">
+                {{row.title}}
+
+                <div class="pull-right d-flex f-row column-gap-1">
+                    <button mButton icon="ph-download-simple"></button>
+                    <m-dropdown dropdownPosition="bottom-left" icon="ph-dots-three">
+                        <button mButton icon="ph-eye" text="View" iconPos="right"></button>
+                        <button mButton (click)="row.public = !row.public">
+                            <ng-container *ngIf="row.public">
+                                Make private
+                                <i class="ph ph-lock-open"></i>
+                            </ng-container>
+                            <ng-container *ngIf="!row.public">
+                                Make public
+                                <i class="ph ph-lock"></i>
+                            </ng-container>
+                        </button>
+                        <button mButton icon="ph-link" text="Assign to collection"></button>
+                    </m-dropdown>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <button mButton icon="ph-caret-line-left" [disabled]="currentPage == 1" (click)="setPage(1)"></button>
+        <button mButton icon="ph-caret-left" [disabled]="currentPage == 1" (click)="setPage(currentPage-1)"></button>
+        <div class="currentPage">
+            {{ currentPage }}
+        </div>
+        <button mButton icon="ph-caret-right" [disabled]="currentPage == totalPages" (click)="setPage(currentPage+1)"></button>
+        <button mButton icon="ph-caret-line-right" [disabled]="currentPage == totalPages" (click)="setPage(totalPages)"></button>
+        <div class="pull-right">
+            <m-dropdown [text]="pageSize + ''" [showDropdownCaret]="true">
+                <button mButton [text]="pg + ''" (click)="setPageSize(pg)" *ngFor="let pg of pageSizes"></button>
+            </m-dropdown>
+        </div>
+    </div>
+</div>
