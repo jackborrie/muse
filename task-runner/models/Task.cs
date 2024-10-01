@@ -11,6 +11,11 @@ public abstract class Task
   /// </summary>
   /// <returns>A boolean value that indicates whether the task succeeded or failed.</returns>
   protected abstract bool Process();
+  
+  /// <summary>
+  /// A function that is used to undo any changes made during the process step. This function is only called when process fails it's third attempt.
+  /// </summary>
+  protected abstract void Failed();
   /// <summary>
   /// A function that is used to undo any changes made during the process step. This function is only called when process fails.
   /// </summary>
@@ -55,8 +60,12 @@ public abstract class Task
     {
       SetStatus(QueuedTaskStatus.Failed);
       Revert();
+
+      if (this.QueuedTask.Attempts == 2)
+      {
+        this.Failed();
+      }
     }
-    
     
     return successfullyProcessed;
   }

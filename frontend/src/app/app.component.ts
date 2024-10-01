@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {RouterOutlet}                              from '@angular/router';
 import {ThemeService} from "./services/theme.service";
 import {Theme}                       from "./models/theme";
@@ -27,6 +27,9 @@ import {MuseTemplate}                              from "./directives/muse-templ
     styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit, OnDestroy {
+
+    @ViewChild('dropdownContainer')
+    protected dropdownContainer!: ElementRef;
 
     protected currentTheme: Theme | null = null;
     protected isLoggedIn: boolean = false;
@@ -74,6 +77,22 @@ export class AppComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         this._subscriptions.unsubscribe();
+    }
+
+    @HostListener('window:click', ['$event.target'])
+    public onClick(target: EventTarget) {
+        if (this.dropdown == null) {
+            return;
+        }
+        if (!this.dropdownContainer) {
+            return;
+        }
+
+        if (this.dropdownContainer.nativeElement.contains(target)) {
+            return;
+        }
+
+        this._dropDown.setDropdownNotClicked();
     }
 
     protected getDropdownPosition () {

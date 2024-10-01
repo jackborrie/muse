@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
 using backend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,11 @@ namespace backend.Controllers
         [HttpGet("library/sync")]
         public async Task<ActionResult> HandleSync()
         {
+            
+            var headers = Request.Headers;
+            
+            // Response.Headers.Append("x-kobo-sync", "continue");
+            
             return await KoboRedirect("v1/library/sync");
         }
 
@@ -39,10 +45,23 @@ namespace backend.Controllers
         [HttpPost("analytics/gettests")]
         public async Task<ActionResult> HandleGetTests()
         {
+            
+            _logger.LogInformation($"Get tests started");
             var key = Request.Headers["X-Kobo-userkey"];
             // Might be one to override.
-            
-            return await KoboRedirect("v1/analytics/gettests");
+
+            var output = new KoboTests()
+            {
+                Results = "Success",
+                TestKey = string.IsNullOrEmpty(key) ? "" : key.ToString(),
+                Tests = []
+            };
+            _logger.LogInformation($"Get tests ended");
+
+
+            // return await KoboRedirect("v1/analytics/gettests");
+
+            return Ok(output);
         }
 
 
@@ -173,9 +192,11 @@ namespace backend.Controllers
                     _logger.LogError("Failed to redirect unknown route... " + ex.ToString());
                 }
             }
-            _logger.LogError(result.Content.ToString());
+
+            var json = JsonSerializer.Serialize(result.Content);
+            _logger.LogError(json);
             
-            return Ok(result.Content);
+            return Ok(json);
         }
         
         private void Copy<T, U>(IEnumerable<KeyValuePair<string, T>>? from, IEnumerable<KeyValuePair<string, U>>? to)

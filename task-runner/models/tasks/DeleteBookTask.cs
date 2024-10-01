@@ -40,6 +40,11 @@ public class DeleteBookTask: Task
         return true;
     }
 
+    protected override void Failed()
+    {
+        return;
+    }
+
     protected override bool Process()
     {
         var currentUser = DbContext?.Users.FirstOrDefault(u => u.Id == QueuedTask.UserId);

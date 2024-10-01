@@ -6,6 +6,7 @@ import {BookService} from "../../services/book.service";
 import {Book} from "../../models/book";
 import {NgForOf, NgIf} from "@angular/common";
 import {GridComponent} from "../../components/grid/grid.component";
+import {MuseTemplate} from "../../directives/muse-template.directive";
 
 @Component({
     selector: 'app-books',
@@ -17,6 +18,7 @@ import {GridComponent} from "../../components/grid/grid.component";
         NgForOf,
         NgIf,
         GridComponent,
+        MuseTemplate,
     ],
     templateUrl: './books.component.html',
     styleUrl: './books.component.scss'
@@ -51,7 +53,13 @@ export class BooksComponent implements OnInit {
             });
     }
 
-    handleDoubleClick(id: string | null) {
+    protected downloadBook (book: Book): void {
+        this._books.downloadBook(book).subscribe(d => {
+            console.log(d);
+        });
+    }
+
+    protected handleDoubleClick(id: string | null) {
         if (id == null) {
             return;
         }

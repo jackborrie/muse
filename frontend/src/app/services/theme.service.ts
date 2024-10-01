@@ -50,8 +50,7 @@ export class ThemeService {
                     return;
                 }
 
-                this._currentTheme = theme;
-                this.$onThemeChanged.next(this._currentTheme);
+                this.setTheme(theme);
             }, () => {
                 console.log('Unable to fetch theme.')
             })

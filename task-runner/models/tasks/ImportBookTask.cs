@@ -63,6 +63,14 @@ public class ImportBookTask : Task
     }
   }
 
+  protected override void Failed()
+  {
+    if (File.Exists(EpubTempPath))
+    {
+      File.Delete(EpubTempPath);
+    }
+  }
+
   protected override bool Process()
   {
     var temp = Program.TempDirPath;
@@ -152,7 +160,7 @@ public class ImportBookTask : Task
     }
 
     // TODO add user id into this section.
-    var newFilePath = Path.Join(containingDirectory, GenerateFileNameFromTitle(epub.Title));
+    var newFilePath = Path.Join(containingDirectory, GenerateFileNameFromTitle(epub.Title) + ".epub");
 
     // If the file already exists as an imported epub, dont continue or retry
     if (File.Exists(newFilePath))

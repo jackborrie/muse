@@ -133,6 +133,15 @@ public class BookController : ControllerBase
         return filtered;
     }
 
+    [HttpGet("{bookId}/download")]
+    public ActionResult DownloadBook(string bookId)
+    {
+        
+        
+        
+        return Ok();
+    }
+
     [HttpDelete("{bookId}")]
     public ActionResult<Book> Delete(string bookId)
     {

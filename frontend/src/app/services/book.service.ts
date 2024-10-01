@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {RequestService} from "./request.service";
 import {HttpHeaders} from "@angular/common/http";
 import {Book} from "../models/book";
+import {Model} from "../models/model";
 
 @Injectable({
     providedIn: 'root'
@@ -34,5 +35,10 @@ export class BookService {
             queryParams += `&sortDirection=${sortDirection}`;
         }
         return this._request.getAll<Book>(`api/books?${queryParams}`, Book, header);
+    }
+
+    public downloadBook (book: Book) {
+        console.log('test');
+        return this._request.download(`api/books/${book.id}/download`);
     }
 }

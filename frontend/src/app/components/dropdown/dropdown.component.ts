@@ -4,7 +4,7 @@ import {
     ElementRef,
     HostListener,
     Inject,
-    Input,
+    Input, OnDestroy, OnInit,
     PLATFORM_ID,
     Renderer2, TemplateRef,
     ViewChild
@@ -12,6 +12,7 @@ import {
 import {ButtonColor, IconPos, MuseButtonDirective} from "../../directives/muse-button.directive";
 import {NgClass, NgIf, NgStyle}                   from "@angular/common";
 import {DropdownChangeInterface, DropdownService} from "../../services/dropdown.service";
+import {Subscription} from "rxjs";
 
 export type DropdownPosition = 'top-left' | 'top-right' | 'right-top' | 'right-bottom' | 'bottom-left' | 'bottom-right' | 'left-top' | 'left-bottom';
 
@@ -27,7 +28,7 @@ export type DropdownPosition = 'top-left' | 'top-right' | 'right-top' | 'right-b
   templateUrl: './dropdown.component.html',
   styleUrl: './dropdown.component.scss'
 })
-export class DropdownComponent implements AfterViewInit {
+export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild('dropdown')
     protected dropdown!: ElementRef;
@@ -56,9 +57,26 @@ export class DropdownComponent implements AfterViewInit {
 
     protected isDropdownDown = false;
 
+    private _subscriptions: Subscription = new Subscription();
+
     public constructor(
         private _dropdownService: DropdownService
     ) {
+    }
+
+    public ngOnInit() {
+        const stateSub = this._dropdownService.$onDropdownChanged
+            .subscribe((s) => {
+                if (s == null) {
+                    this.isDropdownDown = false;
+                }
+            });
+
+        this._subscriptions.add(stateSub);
+    }
+
+    public ngOnDestroy() {
+        this._subscriptions.unsubscribe();
     }
 
     protected handleDropdownClick () {
@@ -83,9 +101,32 @@ export class DropdownComponent implements AfterViewInit {
             position.top = (buttonPosition.bottom - 1) + 'px';
         }
 
+        if (this.dropdownPosition?.startsWith('top-')) {
+            position.bottom = (windowHeight - buttonPosition.top - 1) + 'px';
+        }
+
+        if (this.dropdownPosition?.startsWith('right-')) {
+            position.left = (buttonPosition.right - 1) + 'px';
+        }
+
+        if (this.dropdownPosition?.startsWith('left-')) {
+            position.right = (windowWidth -buttonPosition.left - 1) + 'px';
+        }
+
         if (this.dropdownPosition?.endsWith('-left')) {
-            console.log(windowWidth, buttonPosition.right, windowWidth - buttonPosition.right)
-            position.right = (windowWidth - buttonPosition.right + 1) + 'px';
+            position.right = (windowWidth - buttonPosition.right) + 'px';
+        }
+
+        if (this.dropdownPosition?.endsWith('-right')) {
+            position.left = buttonPosition.left + 'px';
+        }
+
+        if (this.dropdownPosition?.endsWith('-top')) {
+            position.bottom = (windowHeight - buttonPosition.bottom) + 'px';
+        }
+
+        if (this.dropdownPosition?.endsWith('bottom')) {
+            position.top = (buttonPosition.top) + 'px';
         }
 
         let dropdown: DropdownChangeInterface = {
@@ -110,6 +151,9 @@ export class DropdownComponent implements AfterViewInit {
 
     @HostListener('window:click', ['$event.target'])
     public onClick(target: EventTarget) {
+        if (!this.isDropdownDown) {
+            return;
+        }
         if (!this.dropdown) {
             return;
         }
@@ -117,7 +161,7 @@ export class DropdownComponent implements AfterViewInit {
             return;
         }
 
-        // this._dropdownService.setDropdown(null);
+        this._dropdownService.setButtonNotClicked();
     }
 
     private _calculateDropdownPosition () {
@@ -142,9 +186,5 @@ export class DropdownComponent implements AfterViewInit {
         }
 
         this.dropdownPosition = position;
-    }
-
-    test () {
-    console.log('test')
     }
 }

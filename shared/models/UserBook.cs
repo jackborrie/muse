@@ -16,7 +16,7 @@ public class UserBook : Model
     public string? BookId { get; set; }
 
     [Column("creation_date")] 
-    public DateTime CreationDate { get; set; } = DateTime.Now;
+    public DateTime CreationDate { get; set; } = DateTime.UtcNow;
 
     [NotMapped]
     public List<User> Users { get; set; } = [];

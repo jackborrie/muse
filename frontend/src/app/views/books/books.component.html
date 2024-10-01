@@ -1,3 +1,25 @@
-<m-grid [totalPages]="totalPages" [rows]="books">
+<m-grid [totalPages]="totalPages" [rows]="books" (onRowDoubleClick)="handleDoubleClick($event)">
+    <ng-template mTemplate="row" let-row>
+        {{row.title}}
 
+        <div class="pull-right d-flex f-row column-gap-1">
+            <button mButton icon="ph-download-simple" (click)="downloadBook(row)"></button>
+            <m-dropdown [template]="gridOptions" dropdownPosition="bottom-left" icon="ph-dots-three">
+            </m-dropdown>
+            <ng-template #gridOptions>
+                <button mButton icon="ph-eye" text="View" iconPos="right"></button>
+                <button mButton (click)="row.public = !row.public">
+                    <ng-container *ngIf="row.public">
+                        Make private
+                        <i class="ph ph-lock-open"></i>
+                    </ng-container>
+                    <ng-container *ngIf="!row.public">
+                        Make public
+                        <i class="ph ph-lock"></i>
+                    </ng-container>
+                </button>
+                <button mButton icon="ph-link" text="Assign to collection"></button>
+            </ng-template>
+        </div>
+    </ng-template>
 </m-grid>

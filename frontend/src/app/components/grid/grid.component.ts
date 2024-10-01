@@ -1,11 +1,23 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2, ViewChild} from '@angular/core';
+import {
+    Component, ContentChildren,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    QueryList,
+    Renderer2, TemplateRef,
+    ViewChild
+} from '@angular/core';
 import {DropdownComponent}                                                                from "../dropdown/dropdown.component";
 import {MuseInputDirective}                                                               from "../../directives/muse-input.directive";
-import {NgForOf, NgIf}                                                                    from "@angular/common";
+import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
 import {MuseButtonDirective}                                                              from "../../directives/muse-button.directive";
 import {convertRemToPixels}                                                               from "../../lib/convert-rem-to-pixels";
 import {StateService}                                                                     from "../../services/state.service";
 import {Subscription}                                                                     from "rxjs";
+import {getTemplate} from "../../lib/get-template";
+import {MuseTemplate} from "../../directives/muse-template.directive";
 
 export interface GridPaginationInterface {
     pageSize: number;
@@ -20,7 +32,8 @@ export interface GridPaginationInterface {
         MuseButtonDirective,
         MuseInputDirective,
         NgForOf,
-        NgIf
+        NgIf,
+        NgTemplateOutlet
     ],
     templateUrl: './grid.component.html',
     styleUrl: './grid.component.scss'
@@ -31,6 +44,8 @@ export class GridComponent implements OnInit {
     protected rowsContainer!: ElementRef;
     @ViewChild('allRows')
     protected allRows!: ElementRef;
+    @ContentChildren(MuseTemplate)
+    protected templates!: QueryList<MuseTemplate>;
 
     @Input()
     public rows: any[] = [];
@@ -86,6 +101,10 @@ export class GridComponent implements OnInit {
         this.onPaginationChanged.next(paginationData);
     }
 
+    protected getRowTemplate(templateName: string): TemplateRef<any> | null {
+        return getTemplate(this.templates, templateName);
+    }
+
     ngOnInit(): void {
         let sidebarHeightSub = this._state.$onSidebarHeightChanged.subscribe(height => {
             height = height - 66 - 66 - convertRemToPixels(2);
@@ -100,4 +119,6 @@ export class GridComponent implements OnInit {
 
         this._subscriptions.add(sidebarHeightSub);
     }
+
+    protected readonly getTemplate = getTemplate;
 }

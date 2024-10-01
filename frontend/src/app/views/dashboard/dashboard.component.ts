@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
         this._subscriptions.add(authenticationSubject);
 
-        this._book.getBooks(1, 20, 'created_date', 'desc')
+        this._book.getBooks(0, 20, 'created_date', 'desc')
             .subscribe(book => {
                 this.books = book.data;
             });
