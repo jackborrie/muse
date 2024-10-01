@@ -26,6 +26,9 @@
 
     border-bottom-left-radius: calc(var(--border-radius) - 3px);
     border-bottom-right-radius: calc(var(--border-radius) - 3px);
+
+    overflow-x: auto;
+    overflow-y: visible;
 }
 
 .content {

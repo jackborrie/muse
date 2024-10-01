@@ -1,0 +1,59 @@
+.book {
+    height: 250px;
+    min-width: 200px;
+    max-width: 200px;
+
+    background: var(--background-1);
+    border-radius: var(--border-radius);
+    //border: var(--border);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.book-cover {
+    flex-grow: 1;
+
+    border: var(--border);
+    border-bottom: none;
+    border-top-left-radius: var(--border-radius);
+    border-top-right-radius: var(--border-radius);
+}
+
+.book-info {
+    display: flex;
+    flex-direction: row;
+    max-height: 38px;
+    min-height: 38px;
+}
+
+.book-name {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    min-width: 0;
+
+    border: var(--border);
+    border-right: none;
+
+    padding-left: 1rem;
+    border-bottom-left-radius: var(--border-radius);
+
+    & > span {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.book-dropdown ::ng-deep .dropdown button {
+    border-radius: 0;
+    border-bottom-right-radius: var(--border-radius);
+}
+
+.book-dropdown ::ng-deep .dropdown .dropdown-container {
+    border-top-left-radius: 0;
+}
+

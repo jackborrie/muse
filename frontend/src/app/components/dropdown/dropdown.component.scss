@@ -2,7 +2,7 @@
     position: relative;
 }
 
-.dropdown-container {
+.dropdown-content {
     position: absolute;
     z-index: 1;
     padding: 1rem;
@@ -21,7 +21,7 @@
 }
 
 .dropdown-split {
-    z-index: 2;
+    z-index: 101;
     position: absolute;
 }
 

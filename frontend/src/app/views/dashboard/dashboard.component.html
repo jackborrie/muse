@@ -1,8 +1,9 @@
-<div class="dashboard">
+<div class="dashboard" *ngIf="isLoggedIn">
     <!-- Recent books -->
     <m-section title="Recently added">
         <div class="books">
-            <div class="book"></div>
+            <app-book [book]="book" *ngFor="let book of books"></app-book>
+<!--            <div class="book"></div>-->
         </div>
     </m-section>
 </div>

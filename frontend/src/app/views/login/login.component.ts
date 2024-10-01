@@ -95,6 +95,10 @@ export class LoginComponent implements OnInit, OnDestroy{
             });
 
         this._subscription.add(authChange);
+
+        if (this._authService.isAuthenticated) {
+            this._router.navigate(['/']);
+        }
     }
     ngOnDestroy () {
         this._subscription.unsubscribe()

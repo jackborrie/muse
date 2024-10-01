@@ -9,7 +9,9 @@
             </button>
         </div>
         <div class="bottom d-flex f-column row-gap-1">
-            <m-dropdown icon="ph-plus" title="add new book" dropdownPosition="right-top">
+            <m-dropdown icon="ph-plus" [template]="addNewDropdown" title="add new book" dropdownPosition="right-top">
+            </m-dropdown>
+            <ng-template #addNewDropdown>
                 <div class="file-drop-container">
                     <div id="drop-zone"
                          [ngClass]="{'drag-over': draggingOver}"
@@ -23,21 +25,23 @@
                             </span>
                         </div>
                         <ng-container *ngIf="!uploading">
-<!--                            <i class="ph ph-upload"></i>-->
-<!--                            <span>Drag books</span>-->
+                            <!--                            <i class="ph ph-upload"></i>-->
+                            <!--                            <span>Drag books</span>-->
                             <span>Click here</span>
                         </ng-container>
                         <input #fileInput type="file" accept=".epub" multiple="multiple" style="opacity: 0" (change)="handleFileUpload($event)" hidden>
                     </div>
                 </div>
+            </ng-template>
+            <m-dropdown icon="ph-sun" [template]="themeDropdown" title="theme" dropdownPosition="right-top">
             </m-dropdown>
-            <m-dropdown icon="ph-sun" title="theme" dropdownPosition="right-top">
+            <ng-template #themeDropdown>
                 @if (themes != null) {
                     @for (theme of themes.data; track theme) {
                         <button mButton text="{{theme.name}}" (click)="handleThemeSelect(theme)"></button>
                     }
                 }
-            </m-dropdown>
+            </ng-template>
             <button mButton icon="ph-sign-out" title="sign out" (click)="handleSignOut()">
             </button>
         </div>

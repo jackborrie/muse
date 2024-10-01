@@ -5,7 +5,7 @@
             <button mButton icon="ph-caret-down" (click)="contentHidden = !contentHidden"></button>
         </div>
     </div>
-    <div class="section-content" [hidden]="contentHidden">
+    <div #sectionContent class="section-content" [hidden]="contentHidden">
         <ng-content></ng-content>
     </div>
 </div>

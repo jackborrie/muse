@@ -52,6 +52,8 @@ export class ThemeService {
 
                 this._currentTheme = theme;
                 this.$onThemeChanged.next(this._currentTheme);
+            }, () => {
+                console.log('Unable to fetch theme.')
             })
     }
 

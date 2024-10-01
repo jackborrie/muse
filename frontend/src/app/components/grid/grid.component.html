@@ -1,7 +1,8 @@
 <div class="grid">
     <div class="top-bar">
         <input mInput type="text" class="search-input">
-        <m-dropdown icon="ph-funnel" dropdownPosition="bottom-left"></m-dropdown>
+        <m-dropdown icon="ph-funnel" dropdownPosition="bottom-left" [template]="filter"></m-dropdown>
+        <ng-template #filter></ng-template>
     </div>
     <div #rowsContainer class="all-rows-container">
         <div #allRows class="all-rows">
@@ -10,7 +11,9 @@
 
                 <div class="pull-right d-flex f-row column-gap-1">
                     <button mButton icon="ph-download-simple"></button>
-                    <m-dropdown dropdownPosition="bottom-left" icon="ph-dots-three">
+                    <m-dropdown [template]="gridOptions" dropdownPosition="bottom-left" icon="ph-dots-three">
+                    </m-dropdown>
+                    <ng-template #gridOptions>
                         <button mButton icon="ph-eye" text="View" iconPos="right"></button>
                         <button mButton (click)="row.public = !row.public">
                             <ng-container *ngIf="row.public">
@@ -23,7 +26,7 @@
                             </ng-container>
                         </button>
                         <button mButton icon="ph-link" text="Assign to collection"></button>
-                    </m-dropdown>
+                    </ng-template>
                 </div>
             </div>
         </div>
@@ -37,9 +40,11 @@
         <button mButton icon="ph-caret-right" [disabled]="currentPage == totalPages" (click)="setPage(currentPage+1)"></button>
         <button mButton icon="ph-caret-line-right" [disabled]="currentPage == totalPages" (click)="setPage(totalPages)"></button>
         <div class="pull-right">
-            <m-dropdown [text]="pageSize + ''" [showDropdownCaret]="true">
-                <button mButton [text]="pg + ''" (click)="setPageSize(pg)" *ngFor="let pg of pageSizes"></button>
+            <m-dropdown [template]="pageSize" [text]="pageSize + ''" [showDropdownCaret]="true">
             </m-dropdown>
+            <ng-template #pageSize>
+                <button mButton [text]="pg + ''" (click)="setPageSize(pg)" *ngFor="let pg of pageSizes"></button>
+            </ng-template>
         </div>
     </div>
 </div>

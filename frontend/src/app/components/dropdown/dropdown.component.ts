@@ -6,16 +6,17 @@ import {
     Inject,
     Input,
     PLATFORM_ID,
-    Renderer2,
+    Renderer2, TemplateRef,
     ViewChild
-}                                                  from '@angular/core';
+} from '@angular/core';
 import {ButtonColor, IconPos, MuseButtonDirective} from "../../directives/muse-button.directive";
-import {NgClass, NgIf, NgStyle}                    from "@angular/common";
+import {NgClass, NgIf, NgStyle}                   from "@angular/common";
+import {DropdownChangeInterface, DropdownService} from "../../services/dropdown.service";
 
 export type DropdownPosition = 'top-left' | 'top-right' | 'right-top' | 'right-bottom' | 'bottom-left' | 'bottom-right' | 'left-top' | 'left-bottom';
 
 @Component({
-  selector: 'm-dropdown',
+  selector: 'm-dropdown[template]',
   standalone: true,
     imports: [
         MuseButtonDirective,
@@ -50,14 +51,49 @@ export class DropdownComponent implements AfterViewInit {
     @Input()
     dropdownPosition?: DropdownPosition;
 
+    @Input()
+    template!: TemplateRef<any>;
+
     protected isDropdownDown = false;
 
     public constructor(
+        private _dropdownService: DropdownService
     ) {
     }
 
     protected handleDropdownClick () {
         this.isDropdownDown = !this.isDropdownDown;
+        if (!this.isDropdownDown) {
+            this._dropdownService.setDropdown(null);
+            return;
+        }
+
+        let buttonPosition = this.button.nativeElement.getBoundingClientRect();
+        let windowWidth = window.innerWidth;
+        let windowHeight = window.innerHeight;
+
+        let position: {
+            top?: string,
+            right?: string,
+            bottom?: string,
+            left?: string
+        } = {};
+
+        if (this.dropdownPosition?.startsWith('bottom-')) {
+            position.top = (buttonPosition.bottom - 1) + 'px';
+        }
+
+        if (this.dropdownPosition?.endsWith('-left')) {
+            console.log(windowWidth, buttonPosition.right, windowWidth - buttonPosition.right)
+            position.right = (windowWidth - buttonPosition.right + 1) + 'px';
+        }
+
+        let dropdown: DropdownChangeInterface = {
+            template: this.template,
+            position: position
+        }
+
+        this._dropdownService.setDropdown(dropdown);
     }
 
     ngAfterViewInit() {
@@ -81,7 +117,7 @@ export class DropdownComponent implements AfterViewInit {
             return;
         }
 
-        this.isDropdownDown = false;
+        // this._dropdownService.setDropdown(null);
     }
 
     private _calculateDropdownPosition () {
@@ -106,5 +142,9 @@ export class DropdownComponent implements AfterViewInit {
         }
 
         this.dropdownPosition = position;
+    }
+
+    test () {
+    console.log('test')
     }
 }

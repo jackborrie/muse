@@ -1,4 +1,4 @@
-<div class="{{currentTheme ? currentTheme.className : 'nord-dark'}} muse d-flex f-column" style="{{currentTheme?.style}}">
+<div class="{{currentTheme ? currentTheme.className : 'catppuccin-mocha'}} muse d-flex f-column" style="{{currentTheme?.style}}">
     <div class="header d-flex f-row" *ngIf="isLoggedIn">
         <div class="app-icon d-flex">
             <i class="ph ph-finn-the-human"></i>
@@ -13,6 +13,11 @@
         </div>
         <div class="content-container">
             <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div class="dropdown-container" *ngIf="dropdown != null" [ngStyle]="getDropdownPosition()">
+        <div class="dropdown-content">
+            <ng-container *ngTemplateOutlet="dropdown.template"></ng-container>
         </div>
     </div>
 </div>
