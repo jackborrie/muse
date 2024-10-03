@@ -1,32 +1,30 @@
-import {
-    AfterViewInit,
-    Component,
-    ElementRef,
-    HostListener,
-    Inject,
-    Input, OnDestroy, OnInit,
-    PLATFORM_ID,
-    Renderer2, TemplateRef,
-    ViewChild
-} from '@angular/core';
-import {ButtonColor, IconPos, MuseButtonDirective} from "../../directives/muse-button.directive";
-import {NgClass, NgIf, NgStyle}                   from "@angular/common";
-import {DropdownChangeInterface, DropdownService} from "../../services/dropdown.service";
-import {Subscription} from "rxjs";
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {ButtonColor, IconPos, MuseButtonDirective}                                                            from "../../directives/muse-button.directive";
+import {NgClass, NgIf, NgStyle}                                                                               from "@angular/common";
+import {DropdownChangeInterface, DropdownService}                                                             from "../../services/dropdown.service";
+import {Subscription}                                                                                         from "rxjs";
 
-export type DropdownPosition = 'top-left' | 'top-right' | 'right-top' | 'right-bottom' | 'bottom-left' | 'bottom-right' | 'left-top' | 'left-bottom';
+export type DropdownPosition =
+    'top-left'
+    | 'top-right'
+    | 'right-top'
+    | 'right-bottom'
+    | 'bottom-left'
+    | 'bottom-right'
+    | 'left-top'
+    | 'left-bottom';
 
 @Component({
-  selector: 'm-dropdown[template]',
-  standalone: true,
+    selector: 'm-dropdown[template]',
+    standalone: true,
     imports: [
         MuseButtonDirective,
         NgClass,
         NgIf,
         NgStyle
     ],
-  templateUrl: './dropdown.component.html',
-  styleUrl: './dropdown.component.scss'
+    templateUrl: './dropdown.component.html',
+    styleUrl: './dropdown.component.scss'
 })
 export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
 
@@ -67,7 +65,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
     public ngOnInit() {
         const stateSub = this._dropdownService.$onDropdownChanged
             .subscribe((s) => {
-                if (s == null) {
+                if (s == null || s.template != this.template) {
                     this.isDropdownDown = false;
                 }
             });
@@ -79,7 +77,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
         this._subscriptions.unsubscribe();
     }
 
-    protected handleDropdownClick () {
+    protected handleDropdownClick() {
         this.isDropdownDown = !this.isDropdownDown;
         if (!this.isDropdownDown) {
             this._dropdownService.setDropdown(null);
@@ -110,7 +108,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         if (this.dropdownPosition?.startsWith('left-')) {
-            position.right = (windowWidth -buttonPosition.left - 1) + 'px';
+            position.right = (windowWidth - buttonPosition.left - 1) + 'px';
         }
 
         if (this.dropdownPosition?.endsWith('-left')) {
@@ -154,17 +152,16 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
         if (!this.isDropdownDown) {
             return;
         }
-        if (!this.dropdown) {
-            return;
-        }
-        if (this.dropdown.nativeElement.contains(target)) {
+
+        if (this.dropdown != null && this.dropdown.nativeElement.contains(target)) {
+            this._dropdownService.wasButtonClicked(true);
             return;
         }
 
-        this._dropdownService.setButtonNotClicked();
+        this._dropdownService.wasButtonClicked(false);
     }
 
-    private _calculateDropdownPosition () {
+    private _calculateDropdownPosition() {
         const {top, left} = this.dropdown.nativeElement.getBoundingClientRect();
         const windowHeight = window.outerHeight;
         const windowWidth = window.outerWidth;

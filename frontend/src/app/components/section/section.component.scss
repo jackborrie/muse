@@ -21,14 +21,18 @@
     }
 }
 
-.section-content {
+.section-content-container {
     padding: 1rem;
+    padding-bottom: 0.5rem;
+}
 
+.section-content {
     border-bottom-left-radius: calc(var(--border-radius) - 3px);
     border-bottom-right-radius: calc(var(--border-radius) - 3px);
 
     overflow-x: auto;
     overflow-y: visible;
+    padding-bottom: 0.5rem;
 }
 
 .content {

@@ -1,15 +1,14 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {RouterOutlet}                              from '@angular/router';
-import {ThemeService} from "./services/theme.service";
-import {Theme}                       from "./models/theme";
-import {CommonModule, NgIf, NgStyle} from "@angular/common";
-import {SidebarComponent}            from "./components/sidebar/sidebar.component";
-import {AuthenticationService} from "./services/authentication.service";
-import {Subscription} from "rxjs";
-import {BookService}                  from "./services/book.service";
-import {HeaderComponent}                          from "./components/header/header.component";
-import {DropdownChangeInterface, DropdownService} from "./services/dropdown.service";
-import {MuseTemplate}                              from "./directives/muse-template.directive";
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {NavigationStart, Router, RouterOutlet}                             from '@angular/router';
+import {ThemeService}                                                      from "./services/theme.service";
+import {Theme}                                                             from "./models/theme";
+import {CommonModule, NgIf, NgStyle}                                       from "@angular/common";
+import {SidebarComponent}                                                  from "./components/sidebar/sidebar.component";
+import {AuthenticationService}                                             from "./services/authentication.service";
+import {Subscription}                                                      from "rxjs";
+import {HeaderComponent}                                                   from "./components/header/header.component";
+import {DropdownChangeInterface, DropdownService}                          from "./services/dropdown.service";
+import {MuseTemplate}                                                      from "./directives/muse-template.directive";
 
 @Component({
     selector: 'app-root',
@@ -41,7 +40,8 @@ export class AppComponent implements OnInit, OnDestroy {
     public constructor(
         private _themes: ThemeService,
         private _authService: AuthenticationService,
-        private _dropDown: DropdownService
+        private _dropDown: DropdownService,
+        private _router: Router
     ) {
     }
 
@@ -72,6 +72,14 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this._subscriptions.add(dropdownSub);
 
+        this._router.events.subscribe(event => {
+            if (!(event instanceof NavigationStart)) {
+                return;
+            }
+
+            this._dropDown.clearDropdown();
+        })
+
         this._authService.attemptLogin();
     }
 
@@ -81,21 +89,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
     @HostListener('window:click', ['$event.target'])
     public onClick(target: EventTarget) {
-        if (this.dropdown == null) {
-            return;
-        }
-        if (!this.dropdownContainer) {
-            return;
-        }
-
-        if (this.dropdownContainer.nativeElement.contains(target)) {
+        if (this.dropdownContainer != null && this.dropdownContainer.nativeElement.contains(target)) {
+            this._dropDown.wasDropdownClicked(true);
             return;
         }
 
-        this._dropDown.setDropdownNotClicked();
+        this._dropDown.wasDropdownClicked(false);
     }
 
-    protected getDropdownPosition () {
+    protected getDropdownPosition() {
         if (this.dropdown == null) {
             return null;
         }

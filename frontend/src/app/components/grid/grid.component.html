@@ -5,10 +5,10 @@
         <ng-template #filter></ng-template>
     </div>
     <div #rowsContainer class="all-rows-container">
-        <div #allRows class="all-rows">
+        <div #allRows class="all-rows scrollbar">
             <ng-container *ngFor="let row of rows">
                 <div class="row" *ngIf="getRowTemplate('row')" (dblclick)="handleDoubleClick(row.id)">
-                    <ng-container *ngTemplateOutlet="getRowTemplate('row'); context: {$implicit: row}" ></ng-container>
+                    <ng-container *ngTemplateOutlet="getRowTemplate('row'); context: {$implicit: row}"></ng-container>
                 </div>
             </ng-container>
         </div>

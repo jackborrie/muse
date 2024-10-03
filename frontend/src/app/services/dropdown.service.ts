@@ -15,44 +15,49 @@ export interface DropdownChangeInterface {
 })
 export class DropdownService {
 
-    private _dropdownTemplate:DropdownChangeInterface | null = null
+    private _dropdownTemplate: DropdownChangeInterface | null = null
     public $onDropdownChanged: EventEmitter<DropdownChangeInterface | null> = new EventEmitter<DropdownChangeInterface | null>();
 
-    private _buttonNotClicked: boolean = false;
-    private _initial: boolean = true;
-    private _dropdownNotClicked: boolean = false;
+    private _wasButtonClicked: boolean | null = null;
+    private _wasDropdownClicked: boolean | null = null;
 
     constructor() {
     }
 
-    public setDropdown (template: DropdownChangeInterface | null) {
+    public setDropdown(template: DropdownChangeInterface | null) {
         this._dropdownTemplate = template;
         this.$onDropdownChanged.next(this._dropdownTemplate);
     }
 
-    public setButtonNotClicked() {
-        this._buttonNotClicked = true;
+    public wasButtonClicked(clicked: boolean) {
+        this._wasButtonClicked = clicked;
         this.handleDropdownState();
     }
 
-    public setDropdownNotClicked () {
-        this._dropdownNotClicked = true;
+    public wasDropdownClicked(clicked: boolean) {
+        this._wasDropdownClicked = clicked;
         this.handleDropdownState();
     }
 
-    public handleDropdownState () {
-        if (this._initial) {
-            this._initial = false;
+    public handleDropdownState() {
+        if (this._wasDropdownClicked == null || this._wasButtonClicked == null) {
             return;
         }
 
-        console.log(this._dropdownNotClicked, this._buttonNotClicked)
-        if (!this._dropdownNotClicked || !this._buttonNotClicked ) {
-            // assume click
-            this._dropdownNotClicked = false;
-            this._buttonNotClicked = false;
-            console.log(this._dropdownNotClicked, this._buttonNotClicked)
+        if (this._wasButtonClicked || this._wasDropdownClicked) {
+            this._wasDropdownClicked = null;
+            this._wasButtonClicked = null;
             return;
         }
+
+        this._dropdownTemplate = null;
+        this.$onDropdownChanged.next(this._dropdownTemplate);
+        this._wasDropdownClicked = null;
+        this._wasButtonClicked = null;
+    }
+
+    public clearDropdown() {
+        this._dropdownTemplate = null;
+        this.$onDropdownChanged.next(this._dropdownTemplate);
     }
 }

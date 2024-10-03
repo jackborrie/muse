@@ -81,3 +81,32 @@ html, body {
     flex-direction: column;
     row-gap: 0.5rem;
 }
+
+.scrollbar {
+    /* width */
+    &::-webkit-scrollbar {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    /* Track */
+    &::-webkit-scrollbar-track {
+        border: var(--border);
+        border-radius: var(--border-radius);
+        background: var(--background-1);
+        padding-top: 0.5rem;
+        height: 20px;
+    }
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        border: var(--border);
+        border-radius: var(--border-radius);
+        background: var(--background-2);
+    }
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: var(--background-3);
+    }
+}
