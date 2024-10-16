@@ -3,6 +3,7 @@ import {LoginComponent}       from "./views/login/login.component";
 import {DashboardComponent}   from "./views/dashboard/dashboard.component";
 import {BooksComponent}       from "./views/books/books.component";
 import {CollectionsComponent} from "./views/collections/collections.component";
+import {KobosComponent}       from "./views/kobos/kobos.component";
 
 export const routes: Routes = [
     {
@@ -25,5 +26,9 @@ export const routes: Routes = [
     {
         path: 'collections',
         component: CollectionsComponent
+    },
+    {
+        path: 'kobos',
+        component: KobosComponent
     }
 ];

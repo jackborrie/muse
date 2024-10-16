@@ -65,3 +65,38 @@
     border-radius: var(--border-radius);
     color: var(--foreground-0);
 }
+
+.dropdown-container {
+
+    &.top-right {
+        border-bottom-left-radius: 0;
+    }
+
+    &.top-left {
+        border-bottom-right-radius: 0;
+    }
+
+    &.right-top {
+        border-bottom-left-radius: 0;
+    }
+
+    &.right-bottom {
+        border-top-left-radius: 0;
+    }
+
+    &.bottom-left {
+        border-top-right-radius: 0;
+    }
+
+    &.bottom-right {
+        border-top-left-radius: 0;
+    }
+
+    &.left-top {
+        border-bottom-right-radius: 0;
+    }
+
+    &.left-bottom {
+        border-top-right-radius: 0;
+    }
+}

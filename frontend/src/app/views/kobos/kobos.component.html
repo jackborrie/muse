@@ -1,0 +1,71 @@
+<m-grid [totalPages]="totalPages" [rows]="kobos" [showAdd]="true" (onRowDoubleClick)="handleDoubleClick($event)" (onAddClicked)="selectedKobo = null; addNewModal.setVisible(true)">
+    <ng-template mTemplate="row" let-row>
+        {{row.name}}
+        <ng-container *ngIf="row.getPublic">
+            (public)
+        </ng-container>
+        <div class="pull-center">
+            <ng-container *ngIf="collections != null">
+                {{getCollectionName(row.collectionId)}}
+            </ng-container>
+        </div>
+        <div class="pull-right d-flex f-row column-gap-1">
+            <button mButton icon="ph-eye" title="view kobo link" (click)="selectedKobo = row; viewKoboModal.setVisible(true)"></button>
+            <button mButton icon="ph-pencil" (click)="handleKoboEdit(row); addNewModal.setVisible(true)"></button>
+            <button mButton color="warn" icon="ph-trash" (click)="handleKoboDelete(row.id)"></button>
+        </div>
+    </ng-template>
+</m-grid>
+
+<m-modal #addNewModal>
+    <ng-template mTemplate="header">
+        Add new Kobo device
+    </ng-template>
+    <ng-template mTemplate="content">
+        <div class="kobo-form">
+            <div class="form-row">
+                <label for="name">Kobo name</label>
+                <input id="name" mInput type="text" [(ngModel)]="newKoboName" title="A name used to reference this kobo.">
+            </div>
+            <div class="form-inline-row">
+                <label for="name">Collection</label>
+                <m-dropdown #dropdown class="pull-right" dropdownPosition="bottom-left" [template]="collectionDropdownItem" [text]="getSelectedCollectionName()">
+                </m-dropdown>
+                <ng-template #collectionDropdownItem>
+                    <ng-container *ngFor="let collection of collections">
+                        <button mButton text="{{collection.name}}" (click)="handleKoboCollectionClick(collection); dropdown.closeDropdown()"></button>
+                    </ng-container>
+                </ng-template>
+            </div>
+            <div class="form-inline-row">
+                <label for="getPublic">Add public books to kobo device on sync?</label>
+                <label class="checkbox pull-right">
+                    <input id="getPublic" type="checkbox" [(ngModel)]="getPublic">
+                    <div class="checkmark"></div>
+                </label>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template mTemplate="footer">
+        <div class="pull-right">
+            <button mButton text="Save" (click)="handleKoboSave(); addNewModal.setVisible(false)"></button>
+        </div>
+    </ng-template>
+</m-modal>
+
+<m-modal #viewKoboModal>
+    <ng-template mTemplate="header">
+        Kobo device url
+    </ng-template>
+    <ng-template mTemplate="content">
+        <p style="max-width: 500px;">
+            The following link should be added to your Kobo device's config, this will allow the sync to be overridden.
+        </p>
+        <code class="kobo-url">http://localhost:5158/api/test/{{selectedKobo?.id}}/sync</code>
+    </ng-template>
+    <ng-template mTemplate="footer">
+        <div class="pull-right">
+            <button mButton text="Close" (click)="viewKoboModal.setVisible(false)"></button>
+        </div>
+    </ng-template>
+</m-modal>

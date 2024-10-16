@@ -18,4 +18,7 @@ public class Collection : IdModel
     public string? UserId { get; set; }
 
     [NotMapped] public User? User { get; set; } = null!;
+    [NotMapped] public List<Kobo> Kobos { get; set; } = [];
+    [NotMapped] public List<Book> Books { get; set; } = [];
+
 }

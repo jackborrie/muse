@@ -1,15 +1,22 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Net;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using backend.Models;
+using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Primitives;
+using shared.models;
 
 namespace backend.Controllers
 {
     [ApiController]
-    [Route("v1")]
+    [Route("api/kobo")]
     public class KoboController : ControllerBase
     {
         private readonly string _koboStoreUrl = "https://storeapi.kobo.com"; 
@@ -17,10 +24,287 @@ namespace backend.Controllers
         private readonly ILogger<KoboController> _logger;
         private readonly MuseContext _context;
 
-        public KoboController(ILogger<KoboController> logger, MuseContext context)
+        private IClientService _clientService;
+
+        public KoboController(ILogger<KoboController> logger, MuseContext context, IClientService clientService)
         {
             _logger = logger;
             _context = context;
+            _clientService = clientService;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreateKobo([FromBody]JsonObject data)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = _context.Users.SingleOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+            
+            var collectionId = (string?)data["collectionId"];
+            Collection? collection = null;
+
+            if (!string.IsNullOrEmpty(collectionId))
+            {
+                collection = _context.Collections.SingleOrDefault(c => c.UserId == userId && c.Id == collectionId);
+
+                if (collection == null)
+                {
+                    return BadRequest();
+                }
+            }
+
+            var name = (string?)data["name"];
+            var getPublic = (bool?)data["getPublic"];
+            
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest();
+            }
+            
+            var kobo = new Kobo();
+
+            kobo.UserId = userId;
+            kobo.Name = name; 
+
+            if (getPublic.HasValue)
+            {
+                kobo.GetPublic = getPublic.Value;
+            }
+            
+            user.Kobos.Add(kobo);
+
+            if (collection != null)
+            {
+                collection.Kobos.Add(kobo);
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.ToString());
+            }
+
+            return Ok(kobo);
+        }
+        
+        [ApiExplorerSettings(IgnoreApi=true)]
+        [Route("ws")]
+        public async Task GetKoboInfo()
+        {
+            if (!HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            }
+
+            using var ws = await HttpContext.WebSockets.AcceptWebSocketAsync();
+
+            await _clientService.HandleWebSocketConnection(ws);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetAllUserKobos()
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            
+            var user = _context.Users.Include(user => user.Kobos).SingleOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var filteredData = new FilteredData<Kobo>();
+
+            filteredData.TotalPages = user.Kobos.Count;
+            filteredData.Data = user.Kobos;
+
+            return Ok(filteredData);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateKobo(string id, [FromBody]JsonObject data)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            
+            var user = _context.Users.Include(user => user.Kobos).SingleOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            var kobo = _context.Kobos.Include(k => k.Collection).SingleOrDefault(u => u.Id == id && u.UserId == userId);
+
+            if (kobo == null)
+            {
+                return BadRequest();
+            }
+            
+            var collectionId = (string?)data["collectionId"];
+            Collection? collection = null;
+
+            if (kobo.CollectionId != collectionId)
+            {
+                var existingCollection = kobo.Collection;
+                if (string.IsNullOrEmpty(collectionId))
+                {
+                    if (existingCollection != null)
+                    {
+                        existingCollection.Kobos.Remove(kobo);
+                    }
+                }
+                else
+                {
+                    var newCollection = _context.Collections.SingleOrDefault(c => c.UserId == userId && c.Id == collectionId);
+
+                    if (newCollection == null)
+                    {
+                        return BadRequest();
+                    }
+                    
+                    if (existingCollection != null)
+                    {
+                        existingCollection.Kobos.Remove(kobo);
+                    }
+
+                    collection = newCollection;
+                }
+            }
+
+            
+            var name = (string?)data["name"];
+            var getPublic = (bool?)data["getPublic"];
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                kobo.Name = name;
+            }
+
+            if (getPublic.HasValue)
+            {
+                kobo.GetPublic = getPublic.Value;
+            }
+
+            if (collection != null)
+            {
+                collection.Kobos.Add(kobo);
+            }
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.ToString());
+            }
+
+            return Ok(kobo);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteKobo(string id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            
+            var user = _context.Users.Include(user => user.Kobos).SingleOrDefault(u => u.Id == userId);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            var kobo = _context.Kobos.SingleOrDefault(u => u.Id == id && u.UserId == userId);
+
+            if (kobo == null)
+            {
+                return BadRequest();
+            }
+
+            _context.Kobos.Remove(kobo);
+            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return Problem(ex.ToString());
+            }
+
+            return Ok();
+        }
+
+        [HttpGet("{id}/books")]
+        public async Task<ActionResult> GetKoboBooks(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            var kobo = _context.Kobos.Include(k => k.Collection).SingleOrDefault(k => k.Id == id);
+
+            if (kobo == null)
+            {
+                return BadRequest();
+            }
+
+            IQueryable<Book>? books = null;
+
+            var collection = kobo.Collection;
+
+            if (collection != null)
+            {
+                books = _context.Books.Where(b => b.Collections.Contains(collection));
+            }
+            
+            if (kobo.GetPublic)
+            {
+                var publicBooks = _context.Books.Where(b => b.Public);
+                books = books != null ? publicBooks.Union(books) : publicBooks;
+            }
+
+            if (books == null)
+            {
+                return Ok(new List<Book>());
+            }
+
+            return Ok(books.ToList());
         }
         
         [HttpGet("library/sync")]
@@ -121,7 +405,7 @@ namespace backend.Controllers
 
             if (method == "GET")
             {
-                return Redirect(_koboStoreUrl + url);
+                return Redirect(_koboStoreUrl + "/" + url);
             }
 
             return await MakeRequestToKoboStore(url);

@@ -57,4 +57,8 @@ public class Book : IdModel
     public List<User> Users { get; set; } = [];
     [JsonPropertyName("authors")]  
     public List<Author> Authors { get; set; } = [];
+    
+    [NotMapped]
+    public List<Collection> Collections { get; set; } = [];
+
 }

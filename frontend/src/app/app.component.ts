@@ -4,11 +4,13 @@ import {ThemeService}                                                      from 
 import {Theme}                                                             from "./models/theme";
 import {CommonModule, NgIf, NgStyle}                                       from "@angular/common";
 import {SidebarComponent}                                                  from "./components/sidebar/sidebar.component";
-import {AuthenticationService}                                             from "./services/authentication.service";
-import {Subscription}                                                      from "rxjs";
-import {HeaderComponent}                                                   from "./components/header/header.component";
+import {AuthenticationService}           from "./services/authentication.service";
+import {catchError, retry, Subscription} from "rxjs";
+import {HeaderComponent}                 from "./components/header/header.component";
 import {DropdownChangeInterface, DropdownService}                          from "./services/dropdown.service";
 import {MuseTemplate}                                                      from "./directives/muse-template.directive";
+import {WebsocketsService}                                                 from "./services/websockets.service";
+import {takeUntilDestroyed}                                                from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'app-root',
@@ -41,7 +43,8 @@ export class AppComponent implements OnInit, OnDestroy {
         private _themes: ThemeService,
         private _authService: AuthenticationService,
         private _dropDown: DropdownService,
-        private _router: Router
+        private _router: Router,
+        private _websocket: WebsocketsService
     ) {
     }
 
@@ -71,6 +74,14 @@ export class AppComponent implements OnInit, OnDestroy {
             })
 
         this._subscriptions.add(dropdownSub);
+
+        const webSocketSub = this._websocket.$webSocket
+            .pipe(
+                retry({delay: 5_000})
+            )
+            .subscribe((value) => {
+                console.log(value);
+            });
 
         this._router.events.subscribe(event => {
             if (!(event instanceof NavigationStart)) {

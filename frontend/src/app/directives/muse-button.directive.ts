@@ -3,7 +3,7 @@ import {DOCUMENT} from "@angular/common";
 import {clearChildren} from "../lib/clear-children";
 
 export type IconPos = 'left' | 'right';
-export type ButtonColor = 'primary' | 'accent';
+export type ButtonColor = 'primary' | 'accent' | 'warn';
 
 @Directive({
     selector: 'button[mButton]',

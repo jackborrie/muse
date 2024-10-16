@@ -10,7 +10,7 @@ html, body {
     font-size: 13px;
     height: 100vh;
     width: 100vw;
-    font-family: JetbrainsMono, serif;
+    font-family: "JetbrainsMono", serif;
 }
 
 .catppuccin-mocha {
@@ -76,10 +76,22 @@ html, body {
     margin-right: 0;
 }
 
+.pull-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .form-row {
     display: flex;
     flex-direction: column;
     row-gap: 0.5rem;
+}
+
+.form-inline-row {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    column-gap: 0.5rem;
 }
 
 .scrollbar {

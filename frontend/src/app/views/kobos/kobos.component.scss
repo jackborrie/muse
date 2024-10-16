@@ -1,0 +1,45 @@
+.kobo-form {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.checkbox {
+    display: flex;
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: var(--border);
+    height: 20px;
+    width: 20px;
+}
+
+#getPublic {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.kobo-url {
+    padding: 1.5rem 1rem;
+    background: var(--background-0);
+}
+
+.checkmark {
+    flex-grow: 1;
+    background: var(--background-1);
+    margin: 2px;
+}
+
+.checkbox:hover #getPublic ~ .checkmark {
+    background: var(--background-3);
+}
+
+.checkbox #getPublic:checked ~ .checkmark {
+    background: var(--foreground-0);
+}

@@ -1,4 +1,6 @@
 using backend;
+using backend.Services;
+using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,8 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 8;
     options.Password.RequiredUniqueChars = 1;
 });
+
+builder.Services.AddScoped<IClientService, ClientService>();
 
 var app = builder.Build();
 

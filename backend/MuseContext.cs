@@ -19,6 +19,8 @@ public class MuseContext : IdentityDbContext<User>
     public DbSet<Collection> Collections { get; init; }
     public DbSet<QueuedTask> Tasks { get; init; }
     public DbSet<UserBook> UserBooks { get; init; }
+    
+    public DbSet<Kobo> Kobos { get; init; }
   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,6 +41,24 @@ public class MuseContext : IdentityDbContext<User>
             .HasMany<Collection>(b => b.Collections)
             .WithOne(e => e.User)
             .HasForeignKey(e => e.UserId);
+
+        modelBuilder.Entity<Collection>()
+            .HasMany<Book>(c => c.Books)
+            .WithMany(b => b.Collections)
+            .UsingEntity<CollectionBook>(
+                b => b.HasOne<Book>().WithMany().HasForeignKey(cb => cb.BookId),
+                c => c.HasOne<Collection>().WithMany().HasForeignKey(cb => cb.CollectionId)
+            );
+
+        modelBuilder.Entity<Kobo>()
+            .HasOne<User>(u => u.User)
+            .WithMany(e => e.Kobos)
+            .HasForeignKey(e => e.UserId);
+
+        modelBuilder.Entity<Kobo>()
+            .HasOne<Collection>(u => u.Collection)
+            .WithMany(e => e.Kobos)
+            .HasForeignKey(e => e.CollectionId);
         
         base.OnModelCreating(modelBuilder);
     }

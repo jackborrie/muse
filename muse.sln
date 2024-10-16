@@ -1,14 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "backend", "backend\backend.csproj", "{E1C1A474-E117-4F74-B588-82883D1D403F}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34928.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "backend", "backend\backend.csproj", "{E1C1A474-E117-4F74-B588-82883D1D403F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "database", "database\database.csproj", "{B9B8F171-9421-4A36-B6C3-F51CF7E3D293}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "database", "database\database.csproj", "{B9B8F171-9421-4A36-B6C3-F51CF7E3D293}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "frontend", "frontend\frontend.csproj", "{4DCB0726-3AB7-4950-87F9-076C65F42333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "frontend", "frontend\frontend.csproj", "{4DCB0726-3AB7-4950-87F9-076C65F42333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-runner", "task-runner\task-runner.csproj", "{F97544B3-875D-401C-9305-4CFFEABBDC8F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-runner", "task-runner\task-runner.csproj", "{F97544B3-875D-401C-9305-4CFFEABBDC8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "shared", "shared\shared.csproj", "{60EF31C6-05CA-41C1-AD54-FA95216D6C2B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "shared", "shared\shared.csproj", "{60EF31C6-05CA-41C1-AD54-FA95216D6C2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "middleware", "middleware\middleware.csproj", "{C476A43F-C471-4F2D-9531-6144C858FF9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +41,12 @@ Global
 		{60EF31C6-05CA-41C1-AD54-FA95216D6C2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60EF31C6-05CA-41C1-AD54-FA95216D6C2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60EF31C6-05CA-41C1-AD54-FA95216D6C2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C476A43F-C471-4F2D-9531-6144C858FF9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C476A43F-C471-4F2D-9531-6144C858FF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C476A43F-C471-4F2D-9531-6144C858FF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C476A43F-C471-4F2D-9531-6144C858FF9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

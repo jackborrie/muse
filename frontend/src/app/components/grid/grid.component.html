@@ -3,6 +3,10 @@
         <input mInput type="text" class="search-input">
         <m-dropdown icon="ph-funnel" dropdownPosition="bottom-left" [template]="filter"></m-dropdown>
         <ng-template #filter></ng-template>
+
+        <div class="pull-right">
+            <button mButton *ngIf="showAdd" iconPos="left" icon="ph-plus" text="Add" (click)="handleAddClicked()"></button>
+        </div>
     </div>
     <div #rowsContainer class="all-rows-container">
         <div #allRows class="all-rows scrollbar">

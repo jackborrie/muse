@@ -66,7 +66,7 @@ export class RequestService {
                         const m = new model();
                         m.serialise(d);
 
-                        outputList.push(d);
+                        outputList.push(m);
                     }
 
                     filteredData.data = outputList;
@@ -112,6 +112,13 @@ export class RequestService {
         }
 
         headers = this._addAuthenticationHeaders(headers);
+
+        if (body != null) {
+            var keys = Object.keys(body);
+            for (let key of keys) {
+                console.log(`${key}: ${body[key]}`)
+            }
+        }
 
         return this._httpClient.put(this._baseUrl + '/' + route, body, {headers: headers})
             .pipe (

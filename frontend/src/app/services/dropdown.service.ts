@@ -1,4 +1,5 @@
 import {EventEmitter, Injectable, TemplateRef} from '@angular/core';
+import {DropdownPosition}                      from "../components/dropdown/dropdown.component";
 
 export interface DropdownChangeInterface {
     template: TemplateRef<any>,
@@ -7,7 +8,8 @@ export interface DropdownChangeInterface {
         right?: string,
         bottom?: string,
         left?: string
-    }
+    },
+    class: DropdownPosition
 }
 
 @Injectable({

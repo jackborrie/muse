@@ -57,6 +57,9 @@ export class GridComponent implements OnInit {
     public totalPages: number = 1;
 
     @Input()
+    public showAdd: boolean = false;
+
+    @Input()
     public pageSizes: number[] = [5, 10, 15, 25];
 
     @Output()
@@ -64,6 +67,8 @@ export class GridComponent implements OnInit {
 
     @Output()
     public onRowDoubleClick: EventEmitter<string> = new EventEmitter<string>();
+    @Output()
+    public onAddClicked: EventEmitter<null> = new EventEmitter<null>();
 
     private _subscriptions: Subscription;
 
@@ -79,6 +84,10 @@ export class GridComponent implements OnInit {
             return;
         }
         this.onRowDoubleClick.next(id);
+    }
+
+    handleAddClicked () {
+        this.onAddClicked.next(null);
     }
 
     protected setPage(page: number) {

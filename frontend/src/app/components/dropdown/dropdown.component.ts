@@ -65,6 +65,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
     public ngOnInit() {
         const stateSub = this._dropdownService.$onDropdownChanged
             .subscribe((s) => {
+                console.log('test');
                 if (s == null || s.template != this.template) {
                     this.isDropdownDown = false;
                 }
@@ -129,7 +130,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
 
         let dropdown: DropdownChangeInterface = {
             template: this.template,
-            position: position
+            position: position,
+            class: this.dropdownPosition ?? 'bottom-left'
         }
 
         this._dropdownService.setDropdown(dropdown);
@@ -159,6 +161,10 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
         }
 
         this._dropdownService.wasButtonClicked(false);
+    }
+
+    public closeDropdown () {
+        this._dropdownService.clearDropdown()
     }
 
     private _calculateDropdownPosition() {

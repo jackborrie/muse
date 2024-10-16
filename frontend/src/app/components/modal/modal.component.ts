@@ -15,7 +15,7 @@ import {getTemplate}                     from "../../lib/get-template";
 import {fromEvent, Subscription} from "rxjs";
 
 @Component({
-    selector: 'c-modal',
+    selector: 'm-modal',
     standalone: true,
     imports: [
         NgTemplateOutlet,
