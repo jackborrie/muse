@@ -5,8 +5,8 @@ import {DropdownComponent} from "../../components/dropdown/dropdown.component";
 import {BookService} from "../../services/book.service";
 import {Book} from "../../models/book";
 import {NgForOf, NgIf} from "@angular/common";
-import {GridComponent} from "../../components/grid/grid.component";
-import {MuseTemplate} from "../../directives/muse-template.directive";
+import {GridComponent}         from "../../components/grid/grid.component";
+import {MuseTemplateDirective} from "../../directives/muse-template.directive";
 
 @Component({
     selector: 'app-books',
@@ -18,7 +18,7 @@ import {MuseTemplate} from "../../directives/muse-template.directive";
         NgForOf,
         NgIf,
         GridComponent,
-        MuseTemplate,
+        MuseTemplateDirective,
     ],
     templateUrl: './books.component.html',
     styleUrl: './books.component.scss'
@@ -32,9 +32,9 @@ export class BooksComponent implements OnInit {
 
     protected books: Book[] = [];
 
-    protected currentPage: number = 1;
-    protected pageSize: number = 25;
-    protected totalPages: number = 0;
+    protected currentPage = 1;
+    protected pageSize = 25;
+    protected totalPages = 0;
 
     public constructor(
         private _books: BookService

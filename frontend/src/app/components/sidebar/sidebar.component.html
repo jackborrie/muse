@@ -38,7 +38,7 @@
             <m-dropdown icon="ph-sun" [template]="themeDropdown" title="theme" dropdownPosition="right-top">
             </m-dropdown>
             <ng-template #themeDropdown>
-                @if (themes != null) {
+                @if (themes !== null) {
                     @for (theme of themes.data; track theme) {
                         <button mButton text="{{theme.name}}" (click)="handleThemeSelect(theme)"></button>
                     }

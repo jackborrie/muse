@@ -1,4 +1,4 @@
-<m-grid [totalPages]="totalPages" [rows]="books" (onRowDoubleClick)="handleDoubleClick($event)">
+<m-grid [totalPages]="totalPages" [rows]="books" (rowDoubleClick)="handleDoubleClick($event)">
     <ng-template mTemplate="row" let-row>
         {{row.title}}
 

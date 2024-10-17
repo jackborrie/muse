@@ -1,20 +1,19 @@
 import {AfterContentChecked, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {MuseButtonDirective}                                           from "../../directives/muse-button.directive";
-import {DropdownComponent}            from "../dropdown/dropdown.component";
-import {FilteredData} from "../../models/filtered-data";
-import {Theme} from "../../models/theme";
-import {ThemeService} from "../../services/theme.service";
-import {ModalComponent}                               from "../modal/modal.component";
-import {MuseTemplate}                                 from "../../directives/muse-template.directive";
-import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
-import {MuseInputDirective}                           from "../../directives/muse-input.directive";
-import {AuthenticationService}                        from "../../services/authentication.service";
-import {User} from "../../models/user";
-import {CommonModule, NgIf} from "@angular/common";
-import {BookService} from "../../services/book.service";
-import {RouterLink} from "@angular/router";
-import {StateService} from "../../services/state.service";
-import {convertRemToPixels} from "../../lib/convert-rem-to-pixels";
+import {DropdownComponent}                                             from "../dropdown/dropdown.component";
+import {FilteredData}                                                  from "../../models/filtered-data";
+import {Theme}                                                         from "../../models/theme";
+import {ThemeService}                                                  from "../../services/theme.service";
+import {ModalComponent}                                                from "../modal/modal.component";
+import {MuseTemplateDirective}                                         from "../../directives/muse-template.directive";
+import {ReactiveFormsModule}                                           from "@angular/forms";
+import {MuseInputDirective}                                            from "../../directives/muse-input.directive";
+import {AuthenticationService}                                         from "../../services/authentication.service";
+import {CommonModule}                                                  from "@angular/common";
+import {BookService}                                                   from "../../services/book.service";
+import {RouterLink}                                                    from "@angular/router";
+import {StateService}                                                  from "../../services/state.service";
+import {convertRemToPixels}                                            from "../../lib/convert-rem-to-pixels";
 
 export interface FileUploadInterface {
     uploaded: boolean;
@@ -28,7 +27,7 @@ export interface FileUploadInterface {
         MuseButtonDirective,
         DropdownComponent,
         ModalComponent,
-        MuseTemplate,
+        MuseTemplateDirective,
         ReactiveFormsModule,
         MuseInputDirective,
         CommonModule,
@@ -49,14 +48,14 @@ export class SidebarComponent implements OnInit, AfterContentChecked {
 
     protected draggingOver = false;
 
-    protected uploads: {[key: string]: FileUploadInterface} = {};
+    protected uploads: Record<string, FileUploadInterface> = {};
 
-    protected homeIcon: string = 'ph-house';
+    protected homeIcon = 'ph-house';
 
-    protected get uploading (): boolean {
+    protected get uploading(): boolean {
         const keys = Object.keys(this.uploads);
 
-        for (let key of keys) {
+        for (const key of keys) {
             if (!this.uploads[key].uploaded) {
                 return true;
             }
@@ -88,18 +87,18 @@ export class SidebarComponent implements OnInit, AfterContentChecked {
         }
     }
 
-    ngAfterContentChecked () {
+    ngAfterContentChecked() {
         this.handleResize();
     }
 
-    protected handleResize () {
+    protected handleResize() {
         if (this.sidebar == null) {
             return;
         }
 
-        let sidebarRect = this.sidebar.nativeElement.getBoundingClientRect();
+        const sidebarRect = this.sidebar.nativeElement.getBoundingClientRect();
         // Calculate the expected height of the sidebar based on the window's inner height and the current sidebar offset
-        let screenHeight = window.innerHeight - sidebarRect.top - convertRemToPixels(1);
+        const screenHeight = window.innerHeight - sidebarRect.top - convertRemToPixels(1);
 
         this._state.setHeight(screenHeight);
 
@@ -109,7 +108,7 @@ export class SidebarComponent implements OnInit, AfterContentChecked {
         this._themes.setTheme(theme);
     }
 
-    protected handleFileDrop (event: DragEvent) {
+    protected handleFileDrop(event: DragEvent) {
         console.log(event)
         event.preventDefault();
 
@@ -119,8 +118,9 @@ export class SidebarComponent implements OnInit, AfterContentChecked {
         this._uploadBooks(event.dataTransfer.items);
     }
 
-    protected handleFileUpload (event: any) {
-        let fileList: FileList = event.target.files;
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    protected handleFileUpload(event: any) {
+        const fileList: FileList = event.target.files;
 
         if (fileList.length < 1) {
             return;
@@ -129,31 +129,30 @@ export class SidebarComponent implements OnInit, AfterContentChecked {
         this._uploadBooks(fileList);
     }
 
-    protected handleDragEnter () {
+    protected handleDragEnter() {
         this.draggingOver = true
     }
 
-    protected handleDragLeave () {
+    protected handleDragLeave() {
         this.draggingOver = false
     }
 
-    protected handleSignOut () {
+    protected handleSignOut() {
         this._authService.logout();
     }
 
-    private _uploadBooks (files: any) {
-        for (let fileIdx = 0; fileIdx < files.length; fileIdx++) {
-            const file = files[fileIdx];
-
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    private _uploadBooks(files: any) {
+        for (const file of files) {
             this.uploads[file.name] = {
                 uploaded: false,
                 file: file
             }
 
             console.log('uploading file: ' + file.name)
-            this._books.uploadBook(file).subscribe (result => {
+            this._books.uploadBook(file).subscribe(() => {
                 this.uploads[file.name].uploaded = true;
-            }, error => {
+            }, () => {
                 console.log('Book failed to upload: ' + file.name);
                 this.uploads = {};
             })

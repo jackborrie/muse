@@ -2,7 +2,7 @@
     <form [formGroup]="loginFormGroup">
         <div class="login-panel">
             <div class="form-header">
-                {{ currentScreen != 'login' ? 'Login' : 'Register' }}
+                {{ currentScreen !== 'login' ? 'Login' : 'Register' }}
             </div>
             <div class="form-row">
                 <label for="email">Email: </label>
@@ -12,14 +12,14 @@
                 <label for="password">Password: </label>
                 <input id="password" mInput type="password" formControlName="password" (keyup.enter)="handleLogin()" placeholder="ASD">
             </div>
-            <div class="form-row" *ngIf="currentScreen == 'register'">
+            <div class="form-row" *ngIf="currentScreen === 'register'">
                 <label for="username">Username: </label>
                 <input id="username" mInput type="text" formControlName="username" placeholder="John Doe">
             </div>
             <div class="actions">
                 <button mButton text="Done" (click)="handleLogin()" [disabled]="false"></button>
                 <button mButton class="pull-right" (click)="switchScreen()">
-                    {{ currentScreen != 'login' ? 'Login' : 'Register' }}
+                    {{ currentScreen !== 'login' ? 'Login' : 'Register' }}
                 </button>
             </div>
         </div>

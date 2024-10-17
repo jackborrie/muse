@@ -3,8 +3,8 @@
         {{text}}
         <ng-container *ngIf="showDropdownCaret">
             <i *ngIf="!isDropdownDown" class="ph ph-caret-right"></i>
-            <i *ngIf="isDropdownDown && (dropdownPosition == 'top-left' || dropdownPosition == 'top-right')" class="ph ph-caret-up"></i>
-            <i *ngIf="isDropdownDown && (dropdownPosition == 'bottom-left' || dropdownPosition == 'bottom-right')" class="ph ph-caret-down"></i>
+            <i *ngIf="isDropdownDown && (dropdownPosition === 'top-left' || dropdownPosition === 'top-right')" class="ph ph-caret-up"></i>
+            <i *ngIf="isDropdownDown && (dropdownPosition === 'bottom-left' || dropdownPosition === 'bottom-right')" class="ph ph-caret-down"></i>
         </ng-container>
     </button>
     <div #split class="dropdown-split" [ngClass]="{hidden: !isDropdownDown}"></div>

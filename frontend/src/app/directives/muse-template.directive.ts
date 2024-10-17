@@ -4,10 +4,11 @@ import {Directive, Input, TemplateRef} from '@angular/core';
   selector: '[mTemplate]',
   standalone: true
 })
-export class MuseTemplate {
+export class MuseTemplateDirective {
 
     @Input('mTemplate') name!: string;
 
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     constructor (public template: TemplateRef<any>) {
     }
 

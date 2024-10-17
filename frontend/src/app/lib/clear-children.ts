@@ -1,8 +1,8 @@
 import {ElementRef} from "@angular/core";
 
-export function clearChildren (element: ElementRef<any>) {
+export function clearChildren (element: ElementRef) {
     const childElements = element.nativeElement.children;
-    for (let child of childElements) {
+    for (const child of childElements) {
         element.nativeElement.removeChild(child);
     }
 }

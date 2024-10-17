@@ -1,16 +1,16 @@
-import {Component, Inject, OnDestroy, OnInit, PLATFORM_ID}         from '@angular/core';
+import {Component, OnDestroy, OnInit}                              from '@angular/core';
 import {MuseInputDirective}                                        from "../../directives/muse-input.directive";
 import {FormBuilder, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MuseButtonDirective}                                       from "../../directives/muse-button.directive";
 import {User}                                                      from "../../models/user";
-import {AuthenticationService} from "../../services/authentication.service";
-import {Subscription} from "rxjs";
-import {Router} from "@angular/router";
-import {NgIf} from "@angular/common";
+import {AuthenticationService}                                     from "../../services/authentication.service";
+import {Subscription}                                              from "rxjs";
+import {Router}                                                    from "@angular/router";
+import {NgIf}                                                      from "@angular/common";
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
+    selector: 'app-login',
+    standalone: true,
     imports: [
         MuseInputDirective,
         FormsModule,
@@ -18,10 +18,10 @@ import {NgIf} from "@angular/common";
         MuseButtonDirective,
         NgIf
     ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
-export class LoginComponent implements OnInit, OnDestroy{
+export class LoginComponent implements OnInit, OnDestroy {
 
     protected loginFormGroup = this._formBuilder.group({
         email: ['', [Validators.required, Validators.email]],
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit, OnDestroy{
     private _subscription: Subscription = new Subscription();
     private _attemptingLogin = false;
 
-    public constructor (
+    public constructor(
         private _formBuilder: FormBuilder,
         private _authService: AuthenticationService,
         private _router: Router
@@ -42,14 +42,14 @@ export class LoginComponent implements OnInit, OnDestroy{
 
     }
 
-    protected handleLogin () {
+    protected handleLogin() {
         this.loginFormGroup.markAsTouched();
 
         if (!this.loginFormGroup.valid) {
             return;
         }
 
-        let user = new User();
+        const user = new User();
         user.password = this.loginFormGroup.get('password')?.value || null;
         user.email = this.loginFormGroup.get('email')?.value || null;
 
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         }
     }
 
-    protected switchScreen () {
+    protected switchScreen() {
         if (this.currentScreen === 'register') {
             this.currentScreen = 'login';
 
@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit, OnDestroy{
         }
     }
 
-    ngOnInit () {
+    ngOnInit() {
         const authChange = this._authService.$onIsLoggedInChanged
             .subscribe(result => {
                 if (!this._attemptingLogin) {
@@ -100,7 +100,8 @@ export class LoginComponent implements OnInit, OnDestroy{
             this._router.navigate(['/']);
         }
     }
-    ngOnDestroy () {
+
+    ngOnDestroy() {
         this._subscription.unsubscribe()
     }
 }

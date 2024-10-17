@@ -1,23 +1,13 @@
-import {
-    Component, ContentChildren,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    QueryList,
-    Renderer2, TemplateRef,
-    ViewChild
-} from '@angular/core';
-import {DropdownComponent}                                                                from "../dropdown/dropdown.component";
-import {MuseInputDirective}                                                               from "../../directives/muse-input.directive";
-import {NgForOf, NgIf, NgTemplateOutlet} from "@angular/common";
-import {MuseButtonDirective}                                                              from "../../directives/muse-button.directive";
-import {convertRemToPixels}                                                               from "../../lib/convert-rem-to-pixels";
-import {StateService}                                                                     from "../../services/state.service";
-import {Subscription}                                                                     from "rxjs";
-import {getTemplate} from "../../lib/get-template";
-import {MuseTemplate} from "../../directives/muse-template.directive";
+import {Component, ContentChildren, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, TemplateRef, ViewChild} from '@angular/core';
+import {DropdownComponent}                                                                                                         from "../dropdown/dropdown.component";
+import {MuseInputDirective}                                                                                                        from "../../directives/muse-input.directive";
+import {NgForOf, NgIf, NgTemplateOutlet}                                                                                           from "@angular/common";
+import {MuseButtonDirective}                                                                                                       from "../../directives/muse-button.directive";
+import {convertRemToPixels}                                                                                                        from "../../lib/convert-rem-to-pixels";
+import {StateService}                                                                                                              from "../../services/state.service";
+import {Subscription}                                                                                                              from "rxjs";
+import {getTemplate}                                                                                                               from "../../lib/get-template";
+import {MuseTemplateDirective}                                                                                                     from "../../directives/muse-template.directive";
 
 export interface GridPaginationInterface {
     pageSize: number;
@@ -44,31 +34,32 @@ export class GridComponent implements OnInit {
     protected rowsContainer!: ElementRef;
     @ViewChild('allRows')
     protected allRows!: ElementRef;
-    @ContentChildren(MuseTemplate)
-    protected templates!: QueryList<MuseTemplate>;
+    @ContentChildren(MuseTemplateDirective)
+    protected templates!: QueryList<MuseTemplateDirective>;
 
     @Input()
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     public rows: any[] = [];
 
-    protected currentPage: number = 1;
-    protected pageSize: number = 25;
+    protected currentPage = 1;
+    protected pageSize = 25;
 
     @Input()
-    public totalPages: number = 1;
+    public totalPages = 1;
 
     @Input()
-    public showAdd: boolean = false;
+    public showAdd = false;
 
     @Input()
     public pageSizes: number[] = [5, 10, 15, 25];
 
     @Output()
-    public onPaginationChanged: EventEmitter<GridPaginationInterface> = new EventEmitter<GridPaginationInterface>();
+    public paginationChanged: EventEmitter<GridPaginationInterface> = new EventEmitter<GridPaginationInterface>();
 
     @Output()
-    public onRowDoubleClick: EventEmitter<string> = new EventEmitter<string>();
+    public rowDoubleClick: EventEmitter<string> = new EventEmitter<string>();
     @Output()
-    public onAddClicked: EventEmitter<null> = new EventEmitter<null>();
+    public addClicked: EventEmitter<null> = new EventEmitter<null>();
 
     private _subscriptions: Subscription;
 
@@ -83,11 +74,11 @@ export class GridComponent implements OnInit {
         if (id == null) {
             return;
         }
-        this.onRowDoubleClick.next(id);
+        this.rowDoubleClick.next(id);
     }
 
-    handleAddClicked () {
-        this.onAddClicked.next(null);
+    handleAddClicked() {
+        this.addClicked.next(null);
     }
 
     protected setPage(page: number) {
@@ -102,20 +93,21 @@ export class GridComponent implements OnInit {
     }
 
     private echoPagination() {
-        let paginationData: GridPaginationInterface = {
+        const paginationData: GridPaginationInterface = {
             currentPage: this.currentPage,
             pageSize: this.pageSize
         };
 
-        this.onPaginationChanged.next(paginationData);
+        this.paginationChanged.next(paginationData);
     }
 
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     protected getRowTemplate(templateName: string): TemplateRef<any> | null {
         return getTemplate(this.templates, templateName);
     }
 
     ngOnInit(): void {
-        let sidebarHeightSub = this._state.$onSidebarHeightChanged.subscribe(height => {
+        const sidebarHeightSub = this._state.$onSidebarHeightChanged.subscribe(height => {
             height = height - 66 - 66 - convertRemToPixels(2);
 
             if (this.allRows == null) {

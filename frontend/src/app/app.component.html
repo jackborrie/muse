@@ -15,7 +15,7 @@
             <router-outlet></router-outlet>
         </div>
     </div>
-    <div class="dropdown-container {{dropdown.class}}" #dropdownContainer *ngIf="dropdown != null" [ngStyle]="getDropdownPosition()">
+    <div class="dropdown-container {{dropdown.class}}" #dropdownContainer *ngIf="dropdown !== null" [ngStyle]="getDropdownPosition()">
         <ng-container *ngTemplateOutlet="dropdown.template"></ng-container>
     </div>
 </div>

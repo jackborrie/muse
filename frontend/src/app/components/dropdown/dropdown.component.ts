@@ -45,12 +45,13 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
     color: ButtonColor = 'primary';
 
     @Input()
-    showDropdownCaret: boolean = false;
+    showDropdownCaret = false;
 
     @Input()
     dropdownPosition?: DropdownPosition;
 
     @Input()
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     template!: TemplateRef<any>;
 
     protected isDropdownDown = false;
@@ -85,11 +86,11 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
             return;
         }
 
-        let buttonPosition = this.button.nativeElement.getBoundingClientRect();
-        let windowWidth = window.innerWidth;
-        let windowHeight = window.innerHeight;
+        const buttonPosition = this.button.nativeElement.getBoundingClientRect();
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
 
-        let position: {
+        const position: {
             top?: string,
             right?: string,
             bottom?: string,
@@ -128,7 +129,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
             position.top = (buttonPosition.top) + 'px';
         }
 
-        let dropdown: DropdownChangeInterface = {
+        const dropdown: DropdownChangeInterface = {
             template: this.template,
             position: position,
             class: this.dropdownPosition ?? 'bottom-left'
@@ -144,7 +145,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.dropdown.nativeElement.classList.add(this.dropdownPosition);
 
-        let width = this.button.nativeElement.clientWidth ?? 0;
+        const width = this.button.nativeElement.clientWidth ?? 0;
 
         this.split.nativeElement.setAttribute('style', `--thick: ${width}px`);
     }
@@ -163,7 +164,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
         this._dropdownService.wasButtonClicked(false);
     }
 
-    public closeDropdown () {
+    public closeDropdown() {
         this._dropdownService.clearDropdown()
     }
 
@@ -172,7 +173,7 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
         const windowHeight = window.outerHeight;
         const windowWidth = window.outerWidth;
 
-        let position: any = '';
+        let position = '';
 
         if (top < windowHeight - 300) {
             position += 'bottom';
@@ -188,6 +189,6 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
             position += 'left';
         }
 
-        this.dropdownPosition = position;
+        this.dropdownPosition = position as DropdownPosition;
     }
 }

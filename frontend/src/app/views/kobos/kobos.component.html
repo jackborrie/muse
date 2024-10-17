@@ -1,11 +1,11 @@
-<m-grid [totalPages]="totalPages" [rows]="kobos" [showAdd]="true" (onRowDoubleClick)="handleDoubleClick($event)" (onAddClicked)="selectedKobo = null; addNewModal.setVisible(true)">
+<m-grid [totalPages]="totalPages" [rows]="kobos" [showAdd]="true" (rowDoubleClick)="handleDoubleClick($event)" (addClicked)="selectedKobo = null; addNewModal.setVisible(true)">
     <ng-template mTemplate="row" let-row>
         {{row.name}}
         <ng-container *ngIf="row.getPublic">
             (public)
         </ng-container>
         <div class="pull-center">
-            <ng-container *ngIf="collections != null">
+            <ng-container *ngIf="collections !== null">
                 {{getCollectionName(row.collectionId)}}
             </ng-container>
         </div>

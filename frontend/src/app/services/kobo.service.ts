@@ -14,9 +14,9 @@ export class KoboService {
     ) {
     }
 
-    public getKobos (page: number = 0, pageSize: number = 25, sortBy: string | null = null, sortDirection: string | null = null) {
-        var header = new HttpHeaders();
-        var queryParams = `page=${page}`;
+    public getKobos (page = 0, pageSize = 25, sortBy: string | null = null, sortDirection: string | null = null) {
+        const header = new HttpHeaders();
+        let queryParams = `page=${page}`;
         queryParams += `&pageSize=${pageSize}`;
 
         if (sortBy != null) {
@@ -26,9 +26,10 @@ export class KoboService {
         if (sortDirection != null) {
             queryParams += `&sortDirection=${sortDirection}`;
         }
-        return this._request.getAll('api/kobo', Kobo, header);
+        return this._request.getAll('api/kobo?' + queryParams, Kobo, header);
     }
 
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     public createKobo (kobo: Kobo): Observable<any> {
         return this._request.post('api/kobo', kobo);
     }

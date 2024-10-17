@@ -21,6 +21,11 @@ public class Kobo : IdModel
     [JsonPropertyName("get_public")]
     [Column("get_public")]
     public bool GetPublic { get; set; } = false;
+
+    [JsonPropertyName("status")]
+    [Column("status")]
+    public string? Status { get; set; }
+    
     
     [JsonIgnore]
     [NotMapped] 

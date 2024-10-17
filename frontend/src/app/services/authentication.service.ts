@@ -1,21 +1,20 @@
-import {Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {User} from "../models/user";
-import {LoginResult} from "../models/login-result";
-import moment, {Moment} from "moment";
+import {Injectable}               from '@angular/core';
+import {HttpClient, HttpHeaders}  from "@angular/common/http";
+import {User}                     from "../models/user";
+import {LoginResult}              from "../models/login-result";
+import moment, {Moment}           from "moment";
 import {BehaviorSubject, Subject} from "rxjs";
-import {Router}                          from "@angular/router";
-import {WebsocketsService}               from "./websockets.service";
+import {Router}                   from "@angular/router";
+import {WebsocketsService}        from "./websockets.service";
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthenticationService {
 
-    private _userToken: any;
     private _accessToken: string | null = null;
     private _refreshToken: string | null = null;
-    private _expiresIn: number = 0;
+    private _expiresIn = 0;
     private _websocketToken: string | null = null;
 
     private _expiryDate: Moment | null = null;
@@ -23,7 +22,7 @@ export class AuthenticationService {
     public $onIsLoggedInChanged: Subject<boolean> = new BehaviorSubject(false);
     public $onGotWebsocketToken: Subject<string> = new BehaviorSubject('');
 
-    public get isAuthenticated () {
+    public get isAuthenticated() {
         return this._accessToken != null;
     }
 
@@ -34,14 +33,14 @@ export class AuthenticationService {
     ) {
     }
 
-    public register (user: User) {
+    public register(user: User) {
         this._httpClient.post<User>('http://localhost:5158/register', user)
             .subscribe((result: User) => {
                 console.log(result);
             })
     }
 
-    public login (user: User) {
+    public login(user: User) {
         this._httpClient.post<LoginResult>('http://localhost:5158/login', user)
             .subscribe((result: LoginResult) => {
                 this._accessToken = result.accessToken;
@@ -58,12 +57,12 @@ export class AuthenticationService {
             })
     }
 
-    private _fetchAuthData () {
-        var headers = new HttpHeaders();
+    private _fetchAuthData() {
+        let headers = new HttpHeaders();
         headers = headers.append('Authorization', `Bearer ${this.getAccessToken()}`)
+        /* eslint-disable  @typescript-eslint/no-explicit-any */
         this._httpClient.get<any>('http://localhost:5158/api/authentication/socket', {headers: headers})
-            .subscribe((data: any) => {
-
+            .subscribe((data: { token: string }) => {
                 if (data == null) {
                     return;
                 }
@@ -76,7 +75,7 @@ export class AuthenticationService {
             });
     }
 
-    private _storeDetails () {
+    private _storeDetails() {
         if (!this.isAuthenticated) {
             return;
         }
@@ -93,11 +92,11 @@ export class AuthenticationService {
     }
 
 
-    public attemptLogin () {
+    public attemptLogin() {
         this._accessToken = localStorage.getItem('access_token');
         this._refreshToken = localStorage.getItem('refresh_token');
         this._websocketToken = localStorage.getItem('websocket_token');
-        let expiryDate = localStorage.getItem('expiry_date');
+        const expiryDate = localStorage.getItem('expiry_date');
 
         if (!this.isAuthenticated) {
             this._router.navigate(['login']);
@@ -106,7 +105,7 @@ export class AuthenticationService {
 
         this._expiryDate = moment(expiryDate);
 
-        let now = moment();
+        const now = moment();
 
         if (now.isAfter(this._expiryDate)) {
             this.reattempt();
@@ -115,12 +114,14 @@ export class AuthenticationService {
 
         if (this._websocketToken != null) {
             this._websocket.sendMessage(this._websocketToken);
+        } else {
+            this._fetchAuthData();
         }
 
         this.$onIsLoggedInChanged.next(this.isAuthenticated);
     }
 
-    public reattempt () {
+    public reattempt() {
         if (!this.isAuthenticated || !this._refreshToken) {
             return;
         }
@@ -145,11 +146,11 @@ export class AuthenticationService {
             })
     }
 
-    public getAccessToken (): string | null {
+    public getAccessToken(): string | null {
         return this._accessToken;
     }
 
-    public logout () {
+    public logout() {
         localStorage.clear();
         this._router.navigate(['login']);
         this._accessToken = null;

@@ -1,18 +1,8 @@
-import {
-    AfterViewInit,
-    Component,
-    ContentChildren,
-    ElementRef,
-    Inject,
-    Input, OnDestroy, OnInit,
-    PLATFORM_ID,
-    QueryList,
-    TemplateRef, ViewChild
-} from '@angular/core';
-import {NgClass, NgIf, NgTemplateOutlet} from "@angular/common";
-import {MuseTemplate}                    from "../../directives/muse-template.directive";
-import {getTemplate}                     from "../../lib/get-template";
-import {fromEvent, Subscription} from "rxjs";
+import {AfterViewInit, Component, ContentChildren, ElementRef, Input, OnDestroy, OnInit, QueryList, TemplateRef, ViewChild} from '@angular/core';
+import {NgClass, NgIf, NgTemplateOutlet}                                                                                    from "@angular/common";
+import {MuseTemplateDirective}                                                                                              from "../../directives/muse-template.directive";
+import {getTemplate}                                                                                                        from "../../lib/get-template";
+import {fromEvent, Subscription}                                                                                            from "rxjs";
 
 @Component({
     selector: 'm-modal',
@@ -25,10 +15,10 @@ import {fromEvent, Subscription} from "rxjs";
     templateUrl: './modal.component.html',
     styleUrl: './modal.component.scss'
 })
-export class ModalComponent implements  OnInit, AfterViewInit, OnDestroy {
+export class ModalComponent implements OnInit, AfterViewInit, OnDestroy {
 
-    @ContentChildren(MuseTemplate)
-    templates!: QueryList<MuseTemplate>;
+    @ContentChildren(MuseTemplateDirective)
+    templates!: QueryList<MuseTemplateDirective>;
 
     @ViewChild('modalBackdrop')
     backdrop!: ElementRef;
@@ -38,13 +28,10 @@ export class ModalComponent implements  OnInit, AfterViewInit, OnDestroy {
     @Input()
     showElement?: HTMLButtonElement;
 
-    visible: boolean = false;
+    visible = false;
 
     private _subscriptions: Subscription = new Subscription();
 
-    public constructor(
-    ) {
-    }
 
     ngOnInit() {
         if (this.showElement != null) {
@@ -83,6 +70,7 @@ export class ModalComponent implements  OnInit, AfterViewInit, OnDestroy {
         this.visible = visible;
     }
 
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     protected getTemplate(templateName: string): TemplateRef<any> | null {
         return getTemplate(this.templates, templateName);
     }

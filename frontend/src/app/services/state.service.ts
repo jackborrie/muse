@@ -6,12 +6,8 @@ import {BehaviorSubject, Subject} from "rxjs";
 })
 export class StateService {
 
-    private _currentSidebarHeight: number = 0;
+    private _currentSidebarHeight = 0;
     public $onSidebarHeightChanged: Subject<number> = new BehaviorSubject(this._currentSidebarHeight);
-
-    constructor() {
-
-    }
 
     public setHeight (height: number) {
         this._currentSidebarHeight = height;

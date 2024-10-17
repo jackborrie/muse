@@ -2,6 +2,7 @@ import {EventEmitter, Injectable, TemplateRef} from '@angular/core';
 import {DropdownPosition}                      from "../components/dropdown/dropdown.component";
 
 export interface DropdownChangeInterface {
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
     template: TemplateRef<any>,
     position: {
         top?: string,
@@ -22,9 +23,6 @@ export class DropdownService {
 
     private _wasButtonClicked: boolean | null = null;
     private _wasDropdownClicked: boolean | null = null;
-
-    constructor() {
-    }
 
     public setDropdown(template: DropdownChangeInterface | null) {
         this._dropdownTemplate = template;

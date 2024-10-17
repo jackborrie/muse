@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {RequestService} from "./request.service";
+import {Injectable}               from '@angular/core';
+import {RequestService}           from "./request.service";
 import {BehaviorSubject, Subject} from "rxjs";
-import {Theme} from "../models/theme";
-import {FilteredData} from "../models/filtered-data";
+import {Theme}                    from "../models/theme";
+import {FilteredData}             from "../models/filtered-data";
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +10,7 @@ import {FilteredData} from "../models/filtered-data";
 export class ThemeService {
 
     private _currentTheme: Theme | null = null;
-    public $onThemeChanged: Subject<Theme> = new Subject();
+    public $onThemeChanged: Subject<Theme> = new Subject<Theme>();
 
     private _allThemes: FilteredData<Theme> | null = null;
     public $onAllThemesChange: Subject<FilteredData<Theme> | null> = new BehaviorSubject<FilteredData<Theme> | null>(null);
@@ -20,7 +20,7 @@ export class ThemeService {
     ) {
     }
 
-    public fetchAllThemes () {
+    public fetchAllThemes() {
         this._request.getAll<Theme>('api/themes', Theme, null)
             .subscribe((themes: FilteredData<Theme> | null) => {
                 this._allThemes = themes;
@@ -28,11 +28,11 @@ export class ThemeService {
             })
     }
 
-    public getAllThemes (): Theme[] {
+    public getAllThemes(): Theme[] {
         return this._allThemes ? this._allThemes.data : [];
     }
 
-    public getThemeById (id: string){
+    public getThemeById(id: string) {
         this._request.get('api/themes/' + id, Theme, null)
             .subscribe((theme: Theme | null) => {
                 if (theme == null) {
@@ -43,7 +43,7 @@ export class ThemeService {
             });
     }
 
-    private getDefaultTheme () {
+    private getDefaultTheme() {
         this._request.get('api/themes/default', Theme, null)
             .subscribe((theme: Theme | null) => {
                 if (theme == null) {
@@ -56,13 +56,13 @@ export class ThemeService {
             })
     }
 
-    public setTheme (theme: Theme) {
+    public setTheme(theme: Theme) {
         localStorage.setItem('theme', JSON.stringify(theme));
         this._currentTheme = theme;
         this.$onThemeChanged.next(this._currentTheme);
     }
 
-    public initialThemeLoad () {
+    public initialThemeLoad() {
         const currentTheme = localStorage.getItem('theme');
 
         if (currentTheme == null) {
@@ -71,7 +71,7 @@ export class ThemeService {
             return;
         }
 
-        let theme: Theme = new Theme();
+        const theme: Theme = new Theme();
         try {
             theme.serialise(JSON.parse(currentTheme));
         } catch {

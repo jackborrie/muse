@@ -4,13 +4,11 @@ import {ThemeService}                                                      from 
 import {Theme}                                                             from "./models/theme";
 import {CommonModule, NgIf, NgStyle}                                       from "@angular/common";
 import {SidebarComponent}                                                  from "./components/sidebar/sidebar.component";
-import {AuthenticationService}           from "./services/authentication.service";
-import {catchError, retry, Subscription} from "rxjs";
-import {HeaderComponent}                 from "./components/header/header.component";
-import {DropdownChangeInterface, DropdownService}                          from "./services/dropdown.service";
-import {MuseTemplate}                                                      from "./directives/muse-template.directive";
-import {WebsocketsService}                                                 from "./services/websockets.service";
-import {takeUntilDestroyed}                                                from "@angular/core/rxjs-interop";
+import {AuthenticationService}                                             from "./services/authentication.service";
+import {Subscription}                                                      from "rxjs";
+import {HeaderComponent}                                                   from "./components/header/header.component";
+import {DropdownChangeInterface, DropdownService} from "./services/dropdown.service";
+import {MuseTemplateDirective}                    from "./directives/muse-template.directive";
 
 @Component({
     selector: 'app-root',
@@ -21,7 +19,7 @@ import {takeUntilDestroyed}                                                from 
         SidebarComponent,
         HeaderComponent,
         NgIf,
-        MuseTemplate,
+        MuseTemplateDirective,
         CommonModule
     ],
     templateUrl: './app.component.html',
@@ -33,7 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
     protected dropdownContainer!: ElementRef;
 
     protected currentTheme: Theme | null = null;
-    protected isLoggedIn: boolean = false;
+    protected isLoggedIn = false;
 
     protected dropdown: DropdownChangeInterface | null = null;
 
@@ -43,8 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
         private _themes: ThemeService,
         private _authService: AuthenticationService,
         private _dropDown: DropdownService,
-        private _router: Router,
-        private _websocket: WebsocketsService
+        private _router: Router
     ) {
     }
 
@@ -62,8 +59,9 @@ export class AppComponent implements OnInit, OnDestroy {
             .subscribe(isLoggedIn => {
                 this.isLoggedIn = isLoggedIn;
 
-                if (!this.isLoggedIn) {
-                }
+                // if (!this.isLoggedIn) {
+                //     //
+                // }
             });
 
         this._subscriptions.add(authSub);
@@ -74,14 +72,6 @@ export class AppComponent implements OnInit, OnDestroy {
             })
 
         this._subscriptions.add(dropdownSub);
-
-        const webSocketSub = this._websocket.$webSocket
-            .pipe(
-                retry({delay: 5_000})
-            )
-            .subscribe((value) => {
-                console.log(value);
-            });
 
         this._router.events.subscribe(event => {
             if (!(event instanceof NavigationStart)) {

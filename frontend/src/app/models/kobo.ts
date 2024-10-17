@@ -5,4 +5,5 @@ export class Kobo extends Model {
     public name: string | null = null;
     public getPublic: boolean | null = null;
     public collectionId: string | null = null;
+    public status: string | null = null;
 }

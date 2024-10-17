@@ -2,7 +2,6 @@ import {TestBed} from '@angular/core/testing';
 
 import {ThemeService}   from './theme.service';
 import {RequestService} from "./request.service";
-import SpyObj = jasmine.SpyObj;
 import createSpyObj = jasmine.createSpyObj;
 import {Theme}          from "../models/theme";
 import {FilteredData}   from "../models/filtered-data";
@@ -22,7 +21,6 @@ const data: FilteredData<Theme> = {
 
 describe('ThemeService', () => {
     let service: ThemeService;
-    let requestService: RequestService;
 
     beforeEach(() => {
         const requestSpy = createSpyObj('RequestService', ['getAll']);
@@ -38,7 +36,6 @@ describe('ThemeService', () => {
             ]
         });
         service = TestBed.inject(ThemeService);
-        requestService = TestBed.inject(RequestService) as SpyObj<RequestService>;
     });
 
     it('should be created', () => {

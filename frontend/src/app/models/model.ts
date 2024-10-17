@@ -3,15 +3,16 @@ import { camelCase } from 'lodash';
 export abstract class Model {
     // Jesse's letter: qaassszdfxdfgbvcvb
 
-    public serialise (json: {[key: string]: any}) {
-        let keys = Object.keys(json);
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    public serialise (json: Record<string, any>) {
+        const keys = Object.keys(json);
 
-        for (let key of keys) {
-            // @ts-ignore
+        for (const key of keys) {
+            // @ts-expect-error Nothing
             this[camelCase(key)] = json[key];
         }
     }
 }
-export function activator<T extends Model>(type: { new(): T ;} ): T {
-    return new type();
-}
+// export function activator<T extends Model>(type: { new(): T ;} ): T {
+//     return new type();
+// }

@@ -1,7 +1,8 @@
-import {MuseTemplate}           from "../directives/muse-template.directive";
+import {MuseTemplateDirective}  from "../directives/muse-template.directive";
 import {QueryList, TemplateRef} from "@angular/core";
 
-export function getTemplate(templates: QueryList<MuseTemplate>, columnName: string): TemplateRef<any> | null {
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+export function getTemplate(templates: QueryList<MuseTemplateDirective>, columnName: string): TemplateRef<any> | null {
     let template = null;
     templates.forEach(item => {
         if (item.getType() === columnName) {

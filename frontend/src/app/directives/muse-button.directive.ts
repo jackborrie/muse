@@ -1,6 +1,6 @@
-import {Directive, ElementRef, Inject, Input, OnInit, PLATFORM_ID, Renderer2} from '@angular/core';
-import {DOCUMENT} from "@angular/common";
-import {clearChildren} from "../lib/clear-children";
+import {Directive, ElementRef, Inject, Input, OnInit, Renderer2} from '@angular/core';
+import {DOCUMENT}                                                from "@angular/common";
+import {clearChildren}                                           from "../lib/clear-children";
 
 export type IconPos = 'left' | 'right';
 export type ButtonColor = 'primary' | 'accent' | 'warn';
@@ -20,7 +20,7 @@ export class MuseButtonDirective implements OnInit {
     @Input()
     color: ButtonColor = 'primary';
     @Input()
-    allowSSR: boolean = false;
+    allowSSR = false;
 
     protected readonly BUTTON_CLASS = 'muse-button';
     protected readonly ICON_BUTTON_CLASS = 'muse-icon-button';
@@ -36,13 +36,13 @@ export class MuseButtonDirective implements OnInit {
         this._renderButton();
     }
 
-    private _renderButton (fresh = false) {
+    private _renderButton(fresh = false) {
         if (fresh) {
             // Clear all children if fresh is true
             clearChildren(this.el);
         }
 
-        let isIconOnly = this.text == null && this.icon != null;
+        const isIconOnly = this.text == null && this.icon != null;
 
         if (isIconOnly) {
             this.el.nativeElement.classList.add(this.ICON_BUTTON_CLASS);

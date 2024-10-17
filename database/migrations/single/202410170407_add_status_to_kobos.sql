@@ -1,0 +1,2 @@
+﻿ALTER TABLE kobos
+ADD COLUMN status TEXT NULL;

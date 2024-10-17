@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using backend.Models;
+using backend.Services;
 using backend.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +27,7 @@ namespace backend.Controllers
 
         private IClientService _clientService;
 
-        public KoboController(ILogger<KoboController> logger, MuseContext context, IClientService clientService)
+        public KoboController(ILogger<KoboController> logger, MuseContext context, ClientService clientService)
         {
             _logger = logger;
             _context = context;
@@ -265,6 +266,34 @@ namespace backend.Controllers
             {
                 return Problem(ex.ToString());
             }
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/message")]
+        public async Task<ActionResult> SendMessage(string id, [FromBody] JsonObject data)
+        {
+            
+            if (string.IsNullOrEmpty(id))
+            {
+                return BadRequest();
+            }
+
+            var kobo = _context.Kobos.SingleOrDefault(k => k.Id == id);
+
+            if (kobo == null)
+            {
+                return BadRequest();
+            }
+            
+            var message = (string?)data["message"];
+
+            if (string.IsNullOrEmpty(message) || kobo.UserId == null)
+            {
+                return BadRequest();
+            }
+
+            await _clientService.SendMessageToUserSockets(kobo.UserId, message);
 
             return Ok();
         }

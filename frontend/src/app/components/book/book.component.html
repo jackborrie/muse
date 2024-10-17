@@ -11,10 +11,10 @@
         <div class="book-dropdown">
             <m-dropdown icon="ph-dots-three-circle-vertical" [template]="bookDropdown" dropdownPosition="bottom-left"></m-dropdown>
             <ng-template #bookDropdown>
-                <button mButton text="Download" (click)="handleDownload()"></button>
-                <button mButton text="View"></button>
-                <button mButton text="Make public"></button>
-                <button mButton text="Add to collection"></button>
+                <button mButton (click)="handleDownload()">Download</button>
+                <button mButton>View</button>
+                <button mButton>Make public</button>
+                <button mButton>Add to collection</button>
             </ng-template>
         </div>
     </div>

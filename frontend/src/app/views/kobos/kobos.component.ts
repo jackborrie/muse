@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {GridComponent}     from "../../components/grid/grid.component";
-import {MuseTemplate}  from "../../directives/muse-template.directive";
-import {Kobo}          from "../../models/kobo";
+import {GridComponent}         from "../../components/grid/grid.component";
+import {MuseTemplateDirective} from "../../directives/muse-template.directive";
+import {Kobo}                  from "../../models/kobo";
 import {ModalComponent} from "../../components/modal/modal.component";
 import {MuseButtonDirective} from "../../directives/muse-button.directive";
 import {MuseInputDirective} from "../../directives/muse-input.directive";
@@ -17,7 +17,7 @@ import {CollectionService} from "../../services/collection.service";
     standalone: true,
     imports: [
         GridComponent,
-        MuseTemplate,
+        MuseTemplateDirective,
         MuseButtonDirective,
         ModalComponent,
         MuseInputDirective,
@@ -31,14 +31,14 @@ import {CollectionService} from "../../services/collection.service";
 })
 export class KobosComponent implements OnInit {
 
-    protected totalPages: number = 0;
+    protected totalPages = 0;
     protected kobos: Kobo[] = [];
 
-    protected newKoboName: string = '';
-    protected getPublic: boolean = false;
+    protected newKoboName = '';
+    protected getPublic = false;
 
-    protected currentPage: number = 0;
-    protected pageSize: number = 0;
+    protected currentPage = 0;
+    protected pageSize = 0;
 
     protected selectedCollection: Collection | null = null;
     protected collections: Collection[] | null = null;
@@ -51,7 +51,7 @@ export class KobosComponent implements OnInit {
     }
 
     protected handleDoubleClick(koboId: string) {
-
+        console.log(koboId);
     }
 
     public ngOnInit() {

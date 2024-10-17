@@ -11,6 +11,15 @@ export function getAllBooks (koboId: string) {
             })
         );
 }
+export function sendMessage (koboId: string, message: any) {
+    console.log(message)
+    return Axios.post(`http://localhost:5158/api/kobo/${koboId}/message`, message)
+        .pipe (
+            map ((response) => {
+                return response['data'];
+            })
+        );
+}
 
 
 

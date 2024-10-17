@@ -5,11 +5,11 @@ export class Book extends Model {
     public title: string | null = null;
     public isbn: string | null = null;
     public description: string | null = null;
-    public hasCover: boolean = false;
-    public hasInitialSearch: boolean = false;
-    public read: number = 0;
+    public hasCover = false;
+    public hasInitialSearch = false;
+    public read = 0;
     public ownerId: number | null = null;
-    public public: boolean = false;
+    public public = false;
     public creationDate: Date | null = null;
 
 }

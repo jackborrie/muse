@@ -12,7 +12,7 @@ export type ModelConstructor<T> = new () => T;
 })
 export class RequestService {
 
-    private _baseUrl: string = 'http://localhost:5158';
+    private _baseUrl = 'http://localhost:5158';
 
     constructor(
         private _httpClient: HttpClient,
@@ -34,7 +34,7 @@ export class RequestService {
                 m.serialise(data);
 
                 return m;
-            }, catchError((e, t) => {
+            }, catchError((e) => {
                 if (e.status == 401) {
                     // Unauthorized
                     this._auth.logout();
@@ -60,9 +60,9 @@ export class RequestService {
                         return filteredData;
                     }
 
-                    let outputList: T[] = [];
+                    const outputList: T[] = [];
 
-                    for (let d of filteredData.data) {
+                    for (const d of filteredData.data) {
                         const m = new model();
                         m.serialise(d);
 
@@ -71,13 +71,13 @@ export class RequestService {
 
                     filteredData.data = outputList;
 
-                    // @ts-ignore
+                    //@ts-expect-error Nothing
                     filteredData.totalPages = filteredData['total_pages'];
-                    // @ts-ignore
+                    //@ts-expect-error Nothing
                     delete filteredData['total_pages'];
 
                     return filteredData;
-                }), catchError((e, t) => {
+                }), catchError((e) => {
                     if (e.status == 401) {
                         // Unauthorized
                         this._auth.logout();
@@ -87,7 +87,8 @@ export class RequestService {
             );
     }
 
-    public post(route: string, body: { [key: string]: any } | null, headers?: HttpHeaders) {
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    public post(route: string, body: Record<string, any> | null, headers?: HttpHeaders) {
         if (headers == null) {
             headers = new HttpHeaders();
         }
@@ -96,7 +97,7 @@ export class RequestService {
 
         return this._httpClient.post(this._baseUrl + '/' + route, body, {headers: headers})
             .pipe (
-                catchError((e, t) => {
+                catchError((e) => {
                     if (e.status == 401) {
                         // Unauthorized
                         this._auth.logout();
@@ -106,7 +107,8 @@ export class RequestService {
             );
     }
 
-    public put(route: string, body: { [key: string]: any } | null, headers?: HttpHeaders) {
+    /* eslint-disable  @typescript-eslint/no-explicit-any */
+    public put(route: string, body: Record<string, any> | null, headers?: HttpHeaders) {
         if (headers == null) {
             headers = new HttpHeaders()
         }
@@ -114,15 +116,15 @@ export class RequestService {
         headers = this._addAuthenticationHeaders(headers);
 
         if (body != null) {
-            var keys = Object.keys(body);
-            for (let key of keys) {
+            const keys = Object.keys(body);
+            for (const key of keys) {
                 console.log(`${key}: ${body[key]}`)
             }
         }
 
         return this._httpClient.put(this._baseUrl + '/' + route, body, {headers: headers})
             .pipe (
-                catchError((e, t) => {
+                catchError((e) => {
                     if (e.status == 401) {
                         // Unauthorized
                         this._auth.logout();
@@ -141,7 +143,7 @@ export class RequestService {
 
         return this._httpClient.delete(this._baseUrl + '/' + route, {headers: headers})
             .pipe (
-                catchError((e, t) => {
+                catchError((e) => {
                     if (e.status == 401) {
                         // Unauthorized
                         this._auth.logout();
@@ -158,7 +160,7 @@ export class RequestService {
 
         return this._httpClient.get(this._baseUrl + '/' + route, { responseType: 'blob', headers: headers })
             .pipe (
-                catchError((e, t) => {
+                catchError((e) => {
                     if (e.status == 401) {
                         // Unauthorized
                         this._auth.logout();

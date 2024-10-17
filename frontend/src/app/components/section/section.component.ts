@@ -23,7 +23,7 @@ export class SectionComponent implements AfterViewInit {
     @Input()
     title: string | null = null;
 
-    protected contentHidden: boolean = false;
+    protected contentHidden = false;
 
     public constructor(
         private _renderer: Renderer2
@@ -35,9 +35,8 @@ export class SectionComponent implements AfterViewInit {
     }
 
 
-    @HostListener('window:resize', ['$event.target'])
-    public onWindowResize(target: EventTarget) {
-
+    @HostListener('window:resize')
+    public onWindowResize() {
         this.calculateSectionWidth();
     }
 

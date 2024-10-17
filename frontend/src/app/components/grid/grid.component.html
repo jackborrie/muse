@@ -5,7 +5,7 @@
         <ng-template #filter></ng-template>
 
         <div class="pull-right">
-            <button mButton *ngIf="showAdd" iconPos="left" icon="ph-plus" text="Add" (click)="handleAddClicked()"></button>
+            <button mButton *ngIf="showAdd" iconPos="left" icon="ph-plus" (click)="handleAddClicked()">Add</button>
         </div>
     </div>
     <div #rowsContainer class="all-rows-container">
@@ -18,13 +18,13 @@
         </div>
     </div>
     <div class="footer">
-        <button mButton icon="ph-caret-line-left" [disabled]="currentPage == 1" (click)="setPage(1)"></button>
-        <button mButton icon="ph-caret-left" [disabled]="currentPage == 1" (click)="setPage(currentPage-1)"></button>
+        <button mButton icon="ph-caret-line-left" [disabled]="currentPage === 1" (click)="setPage(1)"></button>
+        <button mButton icon="ph-caret-left" [disabled]="currentPage === 1" (click)="setPage(currentPage-1)"></button>
         <div class="currentPage">
             {{ currentPage }}
         </div>
-        <button mButton icon="ph-caret-right" [disabled]="currentPage == totalPages" (click)="setPage(currentPage+1)"></button>
-        <button mButton icon="ph-caret-line-right" [disabled]="currentPage == totalPages" (click)="setPage(totalPages)"></button>
+        <button mButton icon="ph-caret-right" [disabled]="currentPage === totalPages" (click)="setPage(currentPage+1)"></button>
+        <button mButton icon="ph-caret-line-right" [disabled]="currentPage === totalPages" (click)="setPage(totalPages)"></button>
         <div class="pull-right">
             <m-dropdown [template]="pageSizeDropdown" dropdownPosition="top-left" [text]="pageSize + ''" [showDropdownCaret]="true">
             </m-dropdown>
