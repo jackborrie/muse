@@ -3,13 +3,15 @@ import {Book}                from "../../models/book";
 import {MuseButtonDirective} from "../../directives/muse-button.directive";
 import {DropdownComponent}   from "../dropdown/dropdown.component";
 import {BookService}         from "../../services/book.service";
+import {NgIf}                from "@angular/common";
 
 @Component({
     selector: 'app-book[book]',
     standalone: true,
     imports: [
         MuseButtonDirective,
-        DropdownComponent
+        DropdownComponent,
+        NgIf
     ],
     templateUrl: './book.component.html',
     styleUrl: './book.component.scss'

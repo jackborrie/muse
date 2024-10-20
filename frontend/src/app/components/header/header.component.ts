@@ -25,7 +25,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {
-
         const webSocketSub = this._websocket.$webSocket
             .pipe(
                 retry({delay: 5_000})
