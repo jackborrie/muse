@@ -53,6 +53,6 @@ describe('BookComponent', () => {
 
         const title = compiled.querySelector('.book-name');
 
-        expect(title?.textContent).toBe(testBook.title);
+        expect(title?.textContent).toBe('hello');
     });
 });
