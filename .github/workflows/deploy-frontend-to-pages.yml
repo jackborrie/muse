@@ -58,7 +58,10 @@ jobs:
 
       - name: Install node dependencies
         working-directory: ./frontend
-        run: npm i
+        run: npm ci
+      - name: Rnu tests
+        working-directory: ./frontend
+        run: npm run test:ci
       - name: Build the front-end
         working-directory: ./frontend
         run: ng build --output-path dist --base-href /muse/ --configuration=production
