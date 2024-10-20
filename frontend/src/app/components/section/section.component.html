@@ -2,7 +2,7 @@
     <div class="section-header" [ngClass]="{'content-hidden': contentHidden}">
         {{title}}
         <div class="pull-right">
-            <button mButton icon="ph-caret-down" (click)="contentHidden = !contentHidden"></button>
+            <button mButton icon="ph-caret-down" (click)="contentHidden = !contentHidden" [title]="title + '- dropdown'"></button>
         </div>
     </div>
     <div class="section-content-container">

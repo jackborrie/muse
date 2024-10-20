@@ -1,5 +1,5 @@
 <div #dropdown class="dropdown" [ngClass]="{down: isDropdownDown}">
-    <button id="123" #button mButton [icon]="icon" [iconPos]="iconPos" [color]="color" (click)="handleDropdownClick()">
+    <button #button mButton [icon]="icon" [iconPos]="iconPos" [color]="color" (click)="handleDropdownClick()" [title]="title">
         {{text}}
         <ng-container *ngIf="showDropdownCaret">
             <i *ngIf="!isDropdownDown" class="ph ph-caret-right"></i>

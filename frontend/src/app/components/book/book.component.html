@@ -7,7 +7,7 @@
             <span>{{ book.title }}</span>
         </div>
         <div class="book-dropdown">
-            <m-dropdown icon="ph-dots-three-circle-vertical" [template]="bookDropdown" dropdownPosition="bottom-left"></m-dropdown>
+            <m-dropdown icon="ph-dots-three-circle-vertical" [template]="bookDropdown" dropdownPosition="bottom-left" [title]="book.title + ' - options'"></m-dropdown>
             <ng-template #bookDropdown>
                 <button mButton (click)="handleDownload()">Download</button>
                 <button mButton>View</button>

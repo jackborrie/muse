@@ -43,6 +43,8 @@ export class DropdownComponent implements OnInit, AfterViewInit, OnDestroy {
     iconPos: IconPos = 'right';
     @Input()
     color: ButtonColor = 'primary';
+    @Input()
+    title: string = '';
 
     @Input()
     showDropdownCaret = false;
